@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 4%;
+    --foreground: 210 40% 92%;
+
+    --card: 220 20% 8%;
+    --card-foreground: 210 40% 92%;
+
+    --popover: 220 20% 8%;
+    --popover-foreground: 210 40% 92%;
+
+    --primary: 200 100% 50%;
+    --primary-foreground: 220 20% 4%;
+
+    --secondary: 220 20% 12%;
+    --secondary-foreground: 210 40% 92%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 280 80% 60%;
+    --accent-foreground: 210 40% 95%;
+
+    --destructive: 0 80% 55%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 15%;
+    --ring: 200 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Layer colors */
+    --layer-application: 210 100% 55%;
+    --layer-transport: 145 70% 45%;
+    --layer-internet: 30 95% 55%;
+    --layer-network: 0 80% 55%;
+
+    /* Glow effects */
+    --glow-cyan: 0 0 20px hsl(200 100% 50% / 0.5), 0 0 60px hsl(200 100% 50% / 0.2);
+    --glow-green: 0 0 20px hsl(145 70% 45% / 0.5), 0 0 60px hsl(145 70% 45% / 0.2);
+    --glow-orange: 0 0 20px hsl(30 95% 55% / 0.5), 0 0 60px hsl(30 95% 55% / 0.2);
+    --glow-red: 0 0 20px hsl(0 80% 55% / 0.5), 0 0 60px hsl(0 80% 55% / 0.2);
+    --glow-purple: 0 0 20px hsl(280 80% 60% / 0.5), 0 0 60px hsl(280 80% 60% / 0.2);
+
+    /* Glass */
+    --glass-bg: hsl(220 20% 8% / 0.6);
+    --glass-border: hsl(200 100% 50% / 0.15);
+    --glass-highlight: hsl(200 100% 80% / 0.05);
+
+    /* Fonts */
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 210 40% 92%;
+    --sidebar-primary: 200 100% 50%;
+    --sidebar-primary-foreground: 220 20% 4%;
+    --sidebar-accent: 220 20% 12%;
+    --sidebar-accent-foreground: 210 40% 92%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 200 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .glass-panel-highlight {
+    background: linear-gradient(135deg, var(--glass-highlight), transparent 50%);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+  }
+
+  .glow-text-cyan {
+    color: hsl(var(--primary));
+    text-shadow: var(--glow-cyan);
+  }
+
+  .glow-text-green {
+    color: hsl(var(--layer-transport));
+    text-shadow: var(--glow-green);
+  }
+
+  .glow-text-orange {
+    color: hsl(var(--layer-internet));
+    text-shadow: var(--glow-orange);
+  }
+
+  .glow-text-red {
+    color: hsl(var(--layer-network));
+    text-shadow: var(--glow-red);
+  }
+
+  .neon-border-cyan {
+    border: 1px solid hsl(var(--primary) / 0.5);
+    box-shadow: var(--glow-cyan), inset 0 0 20px hsl(var(--primary) / 0.05);
+  }
+
+  .neon-border-green {
+    border: 1px solid hsl(var(--layer-transport) / 0.5);
+    box-shadow: var(--glow-green), inset 0 0 20px hsl(var(--layer-transport) / 0.05);
+  }
+
+  .neon-border-orange {
+    border: 1px solid hsl(var(--layer-internet) / 0.5);
+    box-shadow: var(--glow-orange), inset 0 0 20px hsl(var(--layer-internet) / 0.05);
+  }
+
+  .neon-border-red {
+    border: 1px solid hsl(var(--layer-network) / 0.5);
+    box-shadow: var(--glow-red), inset 0 0 20px hsl(var(--layer-network) / 0.05);
+  }
+
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(200 100% 50% / 0.02) 2px,
+      hsl(200 100% 50% / 0.02) 4px
+    );
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .text-display {
+    font-family: var(--font-display);
+  }
+
+  .text-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.8; filter: brightness(1.3); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes data-flow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: hsl(200 100% 50%); }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+@keyframes vortex-spin {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+
+/* Video Background */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* optional dark overlay */
+}
