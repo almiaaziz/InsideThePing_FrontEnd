@@ -10,13 +10,13 @@ const StartScreen = () => {
 
   const handleStart = () => {
     setIsExiting(true);
-    setTimeout(() => navigate("/game"), 800);
+    setTimeout(() => navigate("/intro"), 800);
   };
 
   return (
     <div className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ${isExiting ? "opacity-0 scale-110" : "opacity-100"}`}>
      { /*<VortexBackground />*/}
-     <BackgroundVideo src="/public/assets/videos/HomePageVideo.mp4" overlay={true} />
+     <BackgroundVideo src="/public/assets/videos/HomePageVideo.mp4"  />
       <ParticleField />
 
       <div className="relative z-10 flex flex-col items-center gap-12">
