@@ -1,4 +1,5 @@
 import { Zap, Target, Clock, Shield } from "lucide-react";
+import { useGameStore } from "../game/store.js";
 
 interface Metric {
   label: string;
@@ -7,14 +8,20 @@ interface Metric {
   color: string;
 }
 
-const metrics: Metric[] = [
-  { label: "XP", value: "2,450", icon: <Zap className="w-4 h-4" />, color: "glow-text-cyan" },
-  { label: "ACCURACY", value: "94%", icon: <Target className="w-4 h-4" />, color: "glow-text-green" },
-  { label: "LATENCY", value: "24ms", icon: <Clock className="w-4 h-4" />, color: "glow-text-orange" },
-  { label: "INTEGRITY", value: "100%", icon: <Shield className="w-4 h-4" />, color: "glow-text-red" },
-];
 
 const HUDBar = () => {
+ const { xp, accuracy, latency, integrity } = useGameStore(
+    (state) => state.player
+  );
+
+const metrics: Metric[] = [
+
+  { label: "XP", value: `${xp}`, icon: <Zap className="w-4 h-4" />, color: "glow-text-cyan" },
+  { label: "ACCURACY", value: `${accuracy}%`, icon: <Target className="w-4 h-4" />, color: "glow-text-green" },
+  { label: "LATENCY", value: `${latency}ms`, icon: <Clock className="w-4 h-4" />, color: "glow-text-orange" },
+  { label: "INTEGRITY", value: `${integrity}%`, icon: <Shield className="w-4 h-4" />, color: "glow-text-red" },
+];
+
   return (
     <div className="glass-panel rounded-lg px-6 py-3 flex items-center justify-between gap-6">
       <div className="text-display text-sm tracking-widest text-primary font-semibold">

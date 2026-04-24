@@ -89,14 +89,14 @@
   .glass-panel {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
 
   .glass-panel-highlight {
     background: linear-gradient(135deg, var(--glass-highlight), transparent 50%);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(5px);
   }
 
   .glow-text-cyan {

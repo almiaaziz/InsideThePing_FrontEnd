@@ -1,64 +1,61 @@
 import { useState } from "react";
 import { CheckCircle, XCircle, ArrowRight } from "lucide-react";
+import { useGameStore } from "../game/store.js";
+import { layers } from "../game/data";
 
-interface Protocol {
-  name: string;
-  description: string;
-  correct: boolean;
-}
+const MissionView = () => {
+  const { currentLayer, currentTopic } = useGameStore(
+    (state) => state.progress,
+  );
+  const nextStep = useGameStore((state) => state.nextStep);
+  const increaseXP = useGameStore((state) => state.increaseXP);
 
-const protocols: Protocol[] = [
-  { name: "HTTP", description: "Hypertext Transfer Protocol", correct: true },
-  { name: "FTP", description: "File Transfer Protocol", correct: false },
-  { name: "DNS", description: "Domain Name System", correct: false },
-  { name: "SMTP", description: "Simple Mail Transfer Protocol", correct: false },
-];
+  //const [selected, setSelected] = useState<number | null>(null);
+  //const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
 
-const MissionPanel = () => {
-  const [selected, setSelected] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
+  const layer = layers[currentLayer-1];
+  const topic = layer.topics[currentTopic-1];
+  const mission = topic.mission;
 
-  const handleSelect = (index: number) => {
-    setSelected(index);
-    setFeedback(protocols[index].correct ? "success" : "error");
-    setTimeout(() => {
-      if (!protocols[index].correct) {
-        setSelected(null);
-        setFeedback(null);
-      }
-    }, 1500);
+  const handleAnswer = (selected) => {
+    if (selected === mission.answer) {
+      increaseXP(10);
+      setTimeout(() => {
+        nextStep();
+      }, 1000);
+    }
   };
-
   return (
     <div className="glass-panel rounded-xl p-6 flex-1 flex flex-col gap-6">
       {/* Mission header */}
       <div className="flex items-center justify-between">
         <div>
           <div className="text-[10px] text-muted-foreground font-display tracking-[0.3em]">
-            MISSION 01
+            MISSION {topic.id}
           </div>
           <h2 className="text-display text-lg glow-text-cyan mt-1">
-            SELECT THE RIGHT PROTOCOL
+            {mission.title}
           </h2>
         </div>
         <div className="glass-panel rounded-lg px-3 py-1.5 text-xs text-mono glow-text-cyan">
-          LAYER: APPLICATION
+          {layer.name}
         </div>
       </div>
 
       {/* Question */}
       <div className="glass-panel-highlight rounded-lg p-4">
         <p className="text-sm text-muted-foreground">
-          You need to access a web page. Which protocol should you use to request it from the server?
+          {mission.question}
         </p>
       </div>
 
-      {/* Protocol cards */}
-      <div className="grid grid-cols-2 gap-3 flex-1">
-        {protocols.map((p, i) => (
+{
+  /** mission
+   <div className="grid grid-cols-2 gap-3 flex-1">
+        {mission.options.map((p, i) => (
           <button
-            key={p.name}
-            onClick={() => handleSelect(i)}
+            key={p}
+            onClick={() => handleAnswer(p)}
             className={`glass-panel rounded-lg p-4 text-left transition-all duration-300 hover:scale-[1.02] ${
               selected === i
                 ? feedback === "success"
@@ -66,12 +63,16 @@ const MissionPanel = () => {
                   : "neon-border-red"
                 : "hover:neon-border-cyan"
             } ${
-              feedback === "error" && selected === i ? "animate-[glitch_0.3s_ease-in-out]" : ""
+              feedback === "error" && selected === i
+                ? "animate-[glitch_0.3s_ease-in-out]"
+                : ""
             }`}
             disabled={feedback === "success"}
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-display text-sm tracking-wider">{p.name}</span>
+              <span className="text-display text-sm tracking-wider">
+                {p.name}
+              </span>
               {selected === i && feedback === "success" && (
                 <CheckCircle className="w-4 h-4 text-layer-transport" />
               )}
@@ -84,14 +85,19 @@ const MissionPanel = () => {
         ))}
       </div>
 
-      {/* Continue */}
       {feedback === "success" && (
         <button className="glass-panel neon-border-green rounded-lg px-4 py-3 text-display text-sm tracking-widest text-layer-transport flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform animate-fade-in">
           CONTINUE <ArrowRight className="w-4 h-4" />
         </button>
       )}
+   
+   */
+}
+
+      
+    
     </div>
   );
 };
 
-export default MissionPanel;
+export default MissionView;
