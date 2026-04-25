@@ -2,6 +2,9 @@ import { useState } from "react";
 import { CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import { useGameStore } from "../game/store.js";
 import { layers } from "../game/data";
+import QuizMission from "./QuizMission.js";
+import MatchMission from "./MatchMission.js";
+import OrderMission from "./OrderMission.js";
 
 const MissionView = () => {
   const { currentLayer, currentTopic } = useGameStore(
@@ -10,21 +13,28 @@ const MissionView = () => {
   const nextStep = useGameStore((state) => state.nextStep);
   const increaseXP = useGameStore((state) => state.increaseXP);
 
-  //const [selected, setSelected] = useState<number | null>(null);
-  //const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
 
   const layer = layers[currentLayer-1];
   const topic = layer.topics[currentTopic-1];
   const mission = topic.mission;
 
-  const handleAnswer = (selected) => {
-    if (selected === mission.answer) {
-      increaseXP(10);
-      setTimeout(() => {
-        nextStep();
-      }, 1000);
-    }
-  };
+
+  const renderMission = () => {
+  switch (mission.type) {
+    case "quiz":
+      return <QuizMission mission={mission} />;
+
+    case "order":
+      return <OrderMission mission={mission} />;
+
+    case "match":
+      return <MatchMission mission={mission} />;
+
+    default:
+      return <div>Unknown mission</div>;
+  }
+};
+
   return (
     <div className="glass-panel rounded-xl p-6 flex-1 flex flex-col gap-6">
       {/* Mission header */}
@@ -48,54 +58,7 @@ const MissionView = () => {
           {mission.question}
         </p>
       </div>
-
-{
-  /** mission
-   <div className="grid grid-cols-2 gap-3 flex-1">
-        {mission.options.map((p, i) => (
-          <button
-            key={p}
-            onClick={() => handleAnswer(p)}
-            className={`glass-panel rounded-lg p-4 text-left transition-all duration-300 hover:scale-[1.02] ${
-              selected === i
-                ? feedback === "success"
-                  ? "neon-border-green"
-                  : "neon-border-red"
-                : "hover:neon-border-cyan"
-            } ${
-              feedback === "error" && selected === i
-                ? "animate-[glitch_0.3s_ease-in-out]"
-                : ""
-            }`}
-            disabled={feedback === "success"}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-display text-sm tracking-wider">
-                {p.name}
-              </span>
-              {selected === i && feedback === "success" && (
-                <CheckCircle className="w-4 h-4 text-layer-transport" />
-              )}
-              {selected === i && feedback === "error" && (
-                <XCircle className="w-4 h-4 text-destructive" />
-              )}
-            </div>
-            <p className="text-xs text-muted-foreground">{p.description}</p>
-          </button>
-        ))}
-      </div>
-
-      {feedback === "success" && (
-        <button className="glass-panel neon-border-green rounded-lg px-4 py-3 text-display text-sm tracking-widest text-layer-transport flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform animate-fade-in">
-          CONTINUE <ArrowRight className="w-4 h-4" />
-        </button>
-      )}
-   
-   */
-}
-
-      
-    
+      {renderMission()}
     </div>
   );
 };

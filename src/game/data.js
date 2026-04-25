@@ -5,29 +5,323 @@ export const layers = [
     background: "/public/assets/videos/layers/ApplicationLayer.mp4",
 
     intro: {
-      type: "video", // or "animation"
-      content: "/videos/application-intro.mp4",
-      text: "The application layer is where user interaction happens...",
+      type: "scenes",
+      scenes: [
+        {
+          text: "Welcome, I'm PACKET, your guide through the network.",
+          visual: "welcome-packet",
+        },
+        {
+          text: "You are trapped inside your computer. To escape, you must send a ping to the game server.",
+          visual: "pc-to-server",
+        },
+        {
+          text: "But your data cannot travel directly. It must pass through multiple layers inside your system.",
+          visual: "layer-stack",
+        },
+
+        // 🆕 Scene 3 — introduce the idea of transformation
+        {
+          text: "At each layer, your message is transformed and prepared for the next step Which is called Encapsulation.",
+          visual: "data-transform",
+        },
+
+        // 🆕 Scene 4 — zoom into first layer
+        {
+          text: "Your journey begins at the Application Layer. Here, your message is prepared: protocol, destination, and structure.",
+          visual: "highlight-application",
+        },
+      ],
     },
 
     topics: [
+      // Topic 1 : Application Protocols
       {
         id: "1",
-        title: "Protocols",
+        title: "Application Protocols",
 
         explanation: {
-          type: "video", // or "animation"
-          content: "/videos/application-intro.mp4",
-          text: "The application layer is where user interaction happens...",
+          type: "scenes",
+          scenes: [
+            {
+              text: "Let’s focus on one key part of your message: the protocol.",
+              visual: "focus-protocol",
+            },
+            {
+              text: "Applications don't send data randomly. They follow specific communication rules which are called protocols.",
+              visual: "rules",
+            },
+
+            {
+              text: `Each one is designed for a specific type of task and using the wrong protocol means your message won't be understood.`,
+              visual: "protocol-purpose",
+            },
+
+            {
+              text: "If you want to open a web page, you use HTTP.",
+              visual: "http-web",
+            },
+            {
+              text: "If you want to transfer files, you use FTP.",
+              visual: "ftp-transfer",
+            },
+            {
+              text: "If you want to find the address of a website, you use DNS.",
+              visual: "dns-lookup",
+            },
+
+            {
+              text: "Each protocol answers a different need. So the real question is not 'which protocol exists' but 'what do I want to do?",
+              visual: "protocol-compare",
+            },
+
+            {
+              text: "Choose the correct protocol, and your message will move forward.",
+              visual: "decision",
+            },
+          ],
         },
 
         mission: {
-          title: "Select the correct protocol",
           type: "quiz",
+          title: "Select the right protocol",
+          question: "You want to open a web page. Which protocol do you use?",
+          options: [
+            {
+              id: "smtp",
+              label: "SMTP",
+              description: "SMTP is used for sending emails, not web browsing.",
+            },
+
+            {
+              id: "http",
+              label: "HTTP",
+              description: "HTTP is used for web communication",
+            },
+            {
+              id: "ftp",
+              label: "FTP",
+              description: "FTP is used for file transfer, not web browsing.",
+            },
+            {
+              id: "dns",
+              label: "DNS",
+              description:
+                "DNS is used to resolve domain names, not web browsing.",
+            },
+          ],
+          answer: "http",
+        },
+      },
+
+      // Topic 2 : Message Structure
+      {
+        id: "2",
+        title: "Message Structure",
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Your message is almost ready... but it still needs structure.",
+              visual: "raw-data",
+            },
+            {
+              text: "Computers don't understand raw text. They expect data in a precise format.",
+              visual: "computer-confused",
+            },
+            {
+              text: "At the Application Layer, your message is organized into a structured request.",
+              visual: "structure-build",
+            },
+
+            {
+              text: "This structure depends on the protocol you chose. For example: HTTP has its own format.",
+              visual: "protocol-structure",
+            },
+
+            {
+              text: "A typical HTTP request has three main parts.",
+              visual: "http-overview",
+            },
+
+            {
+              text: "First: the METHOD. It tells what you want to do (GET, POST...).",
+              visual: "method",
+            },
+            {
+              text: "Second: the HEADERS. They carry additional information about your request.",
+              visual: "headers",
+            },
+            {
+              text: "Third: the BODY. It contains the actual data you want to send.",
+              visual: "body",
+            },
+
+            {
+              text: "Without this structure, the server cannot understand your message.",
+              visual: "invalid-request",
+            },
+            {
+              text: "A well-structured request ensures your message is correctly processed.",
+              visual: "valid-request",
+            },
+            {
+              text: "Once structured, your message is ready to move to the next layer.",
+              visual: "to-transport",
+            },
+          ],
+        },
+
+        mission: {
+          type: "order",//quiz // match
+          title: "Build a valid HTTP request",
           question:
-            "You need to access a web page. Which protocol should you use to request it from the server?",
-          options: ["HTTP", "FTP"],
-          answer: "FTP",
+            "Arrange the parts of an HTTP request in the correct order.",
+          items: [
+            { id: "method", label: "Method (GET / POST)" },
+            { id: "headers", label: "Headers" },
+            { id: "body", label: "Body" },
+          ],
+          answer: ["method", "headers", "body"],
+        },
+      },
+
+      // Topic3 : Client-Server Communication
+      {
+        id: "3",
+        title: "Client-Server Communication",
+
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Your message is ready and structured. But who are you sending it to?",
+              visual: "question-destination",
+            },
+            {
+              text: "In networking, communication happens between two roles: a client and a server.",
+              visual: "client-server",
+            },
+            {
+              text: "The client is the one who sends a request.",
+              visual: "client-request",
+            },
+            {
+              text: "The server is the one who receives the request and responds.",
+              visual: "server-response",
+            },
+            {
+              text: "Every time you open a website, your computer acts as a client. And the website you contact is a server.",
+              visual: "client-server-example",
+            },
+            {
+              text: "The client sends a request using a protocol like HTTP. And the server processes it and sends back a response.",
+              visual: "request-flow",
+            },
+    
+            {
+              text: "This exchange is called a request-response cycle.",
+              visual: "cycle",
+            },
+            {
+              text: "Understanding this flow is key before your message moves deeper into the network.",
+              visual: "to-transport",
+            },
+          ],
+        },
+
+        mission: {
+          type: "quiz",
+          title: "Identify the roles",
+          question: "When you open a website, what is your computer?",
+          options: [
+            {
+              id: "client",
+              label: "Client",
+              description: "Correct. Your computer initiates the request.",
+            },
+            {
+              id: "server",
+              label: "Server",
+              description: "Incorrect. The server responds to requests.",
+            },
+            {
+              id: "router",
+              label: "Router",
+              description:
+                "Incorrect. Routers forward packets between networks.",
+            },
+            {
+              id: "switch",
+              label: "Switch",
+              description:
+                "Incorrect. Switches connect devices in a local network.",
+            },
+          ],
+          answer: "client",
+        },
+      },
+    ],
+  },
+  {
+    id: "2",
+    name: "Transport Layer",
+    background: "/public/assets/videos/layers/TransportLayer.mp4",
+
+    // 📚 TOPICS
+    topics: [
+      {
+        id: "1",
+        title: "Ports",
+
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "A computer can run multiple services at the same time.",
+              visual: "multiple-services",
+            },
+            {
+              text: "Ports act like doors for these services.",
+              visual: "doors",
+            },
+            {
+              text: "Each protocol uses a specific port.",
+              visual: "port-mapping",
+            },
+            {
+              text: "HTTP uses port 80.",
+              visual: "port-80",
+            },
+            {
+              text: "FTP uses port 21.",
+              visual: "port-21",
+            },
+            {
+              text: "Choosing the correct port ensures your message reaches the right service.",
+              visual: "correct-door",
+            },
+          ],
+        },
+        mission: {
+          type: "match",
+          title: "Match protocol to port",
+          question: "Connect each protocol to its correct port.",
+          left: [
+            { id: "http", label: "HTTP" },
+            { id: "ftp", label: "FTP" },
+            { id: "dns", label: "DNS" },
+          ],
+          right: [
+            { id: "80", label: "80" },
+            { id: "21", label: "21" },
+            { id: "53", label: "53" },
+          ],
+          answer: {
+            http: "80",
+            ftp: "21",
+            dns: "53",
+          },
         },
       },
     ],

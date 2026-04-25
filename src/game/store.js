@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import {layers} from "./data";
 
 export const useGameStore = create((set) => ({
   // 🎮 Player stats
@@ -12,10 +13,10 @@ export const useGameStore = create((set) => ({
   // 📍 Progression
   progress: {
     currentLayer: 1,
-    currentTopic: 1,
+    currentTopic: 0,
   },
 
-  view: "mission", // layerIntro or "topicExplanation" or "mission"
+  view: "layerIntro", // layerIntro or "topicExplanation" or "mission"
 
   // 🎯 Actions
   increaseXP: (amount) =>
@@ -55,16 +56,34 @@ export const useGameStore = create((set) => ({
 
   nextStep: () =>
     set((state) => {
-      if (state.view === "layerIntro") return { view: "topicExplanation" };
+      if (state.view === "layerIntro") {
+        return { 
+          view: "topicExplanation",
+            progress: {
+              ...state.progress,
+            currentTopic: state.progress.currentTopic + 1,
+        }
+      }};
       if (state.view === "topicExplanation") return { view: "mission" };
       if (state.view === "mission") {
-        return {
-          view: "topicExplanation",
-          progress: {
-            ...state.progress,
-            currentTopic: state.progress.currentTopic + 1,
-          },
-        };
+        if(state.progress.currentTopic < layers[state.progress.currentLayer - 1].topics.length){
+          return {
+            view: "topicExplanation",
+            progress: {
+              ...state.progress,
+              currentTopic: state.progress.currentTopic + 1,
+            },
+          };
+        }
+        else{
+          return {
+            view: "layerIntro",
+            progress: {
+              currentLayer: state.progress.currentLayer + 1,
+              currentTopic: 0,
+            },
+          };
+        }
+
       }
-    }),
-}));
+})}));
