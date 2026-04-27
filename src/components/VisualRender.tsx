@@ -6,6 +6,12 @@ const visualsMap = {
   "highlight-application": "/assets/images/highlight-application.png",
   "focus-protocol": "/assets/images/focus-protocol.png",
   "rules": "/assets/images/rules.png",
+  "protocol-purpose": "/assets/images/protocol-purpose.png",
+  "http-web": "/assets/images/http-web.png",
+  "ftp-transfer": "/assets/images/ftp-transfer.png",
+  "smtp-email": "/assets/images/smtp-email.png",
+  "think-purpose": "/assets/images/think-purpose.png",
+  "decision": "/assets/images/decision.png",
 };
 
 const VisualRenderer = ({ visual }) => {
