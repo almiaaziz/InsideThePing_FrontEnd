@@ -3,14 +3,38 @@ import { useNavigate } from "react-router-dom";
 import VortexBackground from "@/components/VortexBackground";
 import ParticleField from "@/components/ParticleField";
 import BackgroundVideo from "@/components/BackgroundVideo";
+import { useGameStore } from "../game/store.js";
+import { layers } from "../game/data";
+import { RotateCcw } from "lucide-react";
 
 const StartScreen = () => {
   const navigate = useNavigate();
   const [isExiting, setIsExiting] = useState(false);
 
+  const { currentLayer, currentTopic } = useGameStore(
+    (state) => state.progress,
+  );
+  const resetProgress = useGameStore((state) => state.resetProgress);
+
+  // Show "continue" / "reset" UI only if the player has progress beyond the
+  // very beginning of layer 1.
+  const hasProgress = currentLayer > 1 || currentTopic > 0;
+  const currentLayerName =
+    layers[currentLayer - 1]?.name ?? layers[0].name;
+
   const handleStart = () => {
     setIsExiting(true);
-    setTimeout(() => navigate("/intro"), 800);
+    setTimeout(() => navigate(hasProgress ? "/game" : "/intro"), 800);
+  };
+
+  const handleReset = () => {
+    if (
+      window.confirm(
+        "Reset all your progress and stats? This cannot be undone.",
+      )
+    ) {
+      resetProgress();
+    }
   };
 
   return (
@@ -50,9 +74,19 @@ const StartScreen = () => {
             }}
           />
           <div className="relative glass-panel neon-border-cyan rounded-2xl px-16 py-5 font-display text-xl tracking-[0.3em] text-primary transition-all duration-300 group-hover:scale-105 group-hover:tracking-[0.4em]">
-            START
+            {hasProgress ? "CONTINUE" : "START"}
           </div>
         </button>
+
+        {hasProgress && (
+          <div
+            className="text-[10px] text-muted-foreground font-mono tracking-widest -mt-6 animate-fade-in"
+            style={{ animationDelay: "0.4s" }}
+          >
+            RESUMING AT — {currentLayerName.toUpperCase()} · TOPIC{" "}
+            {Math.max(currentTopic, 1)}
+          </div>
+        )}
 
         {/* Layer indicators */}
         <div className="flex items-center gap-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
@@ -69,6 +103,16 @@ const StartScreen = () => {
           ))}
         </div>
       </div>
+
+      {hasProgress && (
+        <button
+          onClick={handleReset}
+          className="absolute bottom-6 right-6 z-30 flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-background/40 backdrop-blur-md font-display text-[10px] tracking-[0.3em] text-muted-foreground hover:text-destructive hover:border-destructive/60 hover:bg-destructive/5 transition-all duration-300"
+        >
+          <RotateCcw className="w-3 h-3" />
+          RESET PROGRESS
+        </button>
+      )}
 
       {/* Scanlines */}
       <div className="scanline fixed inset-0 pointer-events-none z-20" />
