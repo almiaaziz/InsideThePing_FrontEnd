@@ -328,6 +328,36 @@ export const layers = [
     name: "Transport Layer",
     background: "/public/assets/videos/layers/TransportLayer.mp4",
 
+    intro: {
+      type: "scenes",
+      scenes: [
+        {
+          text: "You made it past the Application Layer. Your message is structured, but it cannot travel alone.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+        {
+          text: "Welcome to the Transport Layer. Here, your data is broken into smaller pieces called segments.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+        {
+          text: "Each segment is tagged so the receiver can rebuild the original message in the correct order.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+        {
+          text: "This layer also chooses HOW your data will travel: reliably with TCP, or quickly with UDP.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+        {
+          text: "And it decides WHICH service on the destination should receive it, using ports as doors.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+        {
+          text: "Get ready. The Transport Layer is where your message starts its real journey across the network.",
+          video: "/public/assets/videos/layers/TransportLayer.mp4",
+        },
+      ],
+    },
+
     // 📚 TOPICS
     topics: [
       {
@@ -382,6 +412,187 @@ export const layers = [
             ftp: "21",
             dns: "53",
           },
+        },
+      },
+
+      // Topic 2 : Segmentation
+      {
+        id: "2",
+        title: "Segmentation",
+
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Your message might be too big to travel as a single piece.",
+              visual: "big-message",
+            },
+            {
+              text: "The Transport Layer breaks it into smaller chunks called segments.",
+              visual: "split-segments",
+            },
+            {
+              text: "Each segment is given a sequence number so it can be put back in order.",
+              visual: "sequence-numbers",
+            },
+            {
+              text: "Segments may take different paths and arrive out of order.",
+              visual: "out-of-order",
+            },
+            {
+              text: "The receiver uses the sequence numbers to reassemble the original message.",
+              visual: "reassemble",
+            },
+            {
+              text: "Without segmentation, large messages could not travel reliably across the network.",
+              visual: "why-segment",
+            },
+          ],
+        },
+
+        mission: {
+          type: "order",
+          title: "Reassemble the message",
+          question:
+            "Arrange these segments in the correct order to rebuild the original message.",
+          items: [
+            { id: "seg1", label: "Segment #1 — 'HELLO '" },
+            { id: "seg2", label: "Segment #2 — 'FROM '" },
+            { id: "seg3", label: "Segment #3 — 'THE '" },
+            { id: "seg4", label: "Segment #4 — 'NETWORK'" },
+          ],
+          answer: ["seg1", "seg2", "seg3", "seg4"],
+        },
+      },
+
+      // Topic 3 : TCP vs UDP
+      {
+        id: "3",
+        title: "TCP vs UDP",
+
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "The Transport Layer offers two ways to send your data: TCP and UDP.",
+              visual: "tcp-udp",
+            },
+            {
+              text: "TCP is reliable. It checks that every segment arrives, and in the right order.",
+              visual: "tcp-reliable",
+            },
+            {
+              text: "If a segment is lost, TCP asks the sender to send it again.",
+              visual: "tcp-retransmit",
+            },
+            {
+              text: "TCP is used when accuracy matters: web pages, emails, file transfers.",
+              visual: "tcp-usecases",
+            },
+            {
+              text: "UDP is fast. It sends data without waiting for confirmation.",
+              visual: "udp-fast",
+            },
+            {
+              text: "If a segment is lost, UDP does not resend it.",
+              visual: "udp-lossy",
+            },
+            {
+              text: "UDP is used when speed matters more than perfection: live video, voice calls, online games.",
+              visual: "udp-usecases",
+            },
+            {
+              text: "Choose the right protocol for the right job.",
+              visual: "choose-protocol",
+            },
+          ],
+        },
+
+        mission: {
+          type: "quiz",
+          title: "Pick the right protocol",
+          question:
+            "You are designing a live video call app. Which transport protocol should you use?",
+          options: [
+            {
+              id: "tcp",
+              label: "TCP",
+              description:
+                "TCP guarantees delivery, but the delay it adds makes live calls laggy.",
+            },
+            {
+              id: "udp",
+              label: "UDP",
+              description:
+                "Correct. UDP is fast and tolerates a few lost packets, which is perfect for live video.",
+            },
+            {
+              id: "http",
+              label: "HTTP",
+              description:
+                "HTTP is an Application Layer protocol, not a transport one.",
+            },
+            {
+              id: "ftp",
+              label: "FTP",
+              description:
+                "FTP is for file transfers and runs on top of TCP.",
+            },
+          ],
+          answer: "udp",
+        },
+      },
+
+      // Topic 4 : Three-Way Handshake
+      {
+        id: "4",
+        title: "The Three-Way Handshake",
+
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Before TCP sends data, the client and the server must agree to talk.",
+              visual: "handshake-intro",
+            },
+            {
+              text: "This agreement is made through a three-step exchange called the Three-Way Handshake.",
+              visual: "handshake-steps",
+            },
+            {
+              text: "Step 1 — SYN: the client says 'I want to talk to you'.",
+              visual: "syn",
+            },
+            {
+              text: "Step 2 — SYN-ACK: the server replies 'I hear you, and I want to talk too'.",
+              visual: "syn-ack",
+            },
+            {
+              text: "Step 3 — ACK: the client confirms 'Great, let's start'.",
+              visual: "ack",
+            },
+            {
+              text: "Now the connection is open and segments can flow reliably.",
+              visual: "connection-open",
+            },
+            {
+              text: "Without this handshake, TCP could not guarantee a stable connection.",
+              visual: "no-handshake",
+            },
+          ],
+        },
+
+        mission: {
+          type: "order",
+          title: "Establish a TCP connection",
+          question:
+            "Put the steps of the Three-Way Handshake in the correct order.",
+          items: [
+            { id: "syn", label: "SYN — Client requests connection" },
+            { id: "synack", label: "SYN-ACK — Server acknowledges and replies" },
+            { id: "ack", label: "ACK — Client confirms connection" },
+          ],
+          answer: ["syn", "synack", "ack"],
         },
       },
     ],
