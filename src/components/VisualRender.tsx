@@ -26,6 +26,7 @@ const visualsMap: Record<string, string> = {
 };
 
 const VisualRenderer = ({ visual }: { visual: string }) => {
+
   // 1. Prefer a code-based animated illustration when available.
   if (hasSceneIllustration(visual)) {
     return (

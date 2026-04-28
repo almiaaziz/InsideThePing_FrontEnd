@@ -1,4 +1,5 @@
 export const layers = [
+  // Layer 1: Application Layer
   {
     id: "1",
     name: "Application Layer",
@@ -9,7 +10,7 @@ export const layers = [
       scenes: [
         {
           text: "Welcome, I'm PACKET, your guide through the network.",
-          visual: "welcome-packet",
+          visual: "packet_v2",
         },
         {
           text: "You are trapped inside your computer. To escape, you must send a ping to the game server.",
@@ -100,7 +101,7 @@ export const layers = [
             },
             {
               text: "Let's make sure you understand your role before moving forward.",
-              visual: "decision",
+              visual: "packet_v1",
             },
           ],
         },
@@ -147,7 +148,7 @@ export const layers = [
           scenes: [
             {
               text: "Good. Now that you know who you're communicating with, it's time to decide how.",
-              visual: "focus-protocol",
+              visual: "packet_v3",
             },
             {
               text: "Applications don't send data randomly. They follow specific communication rules called protocols.",
@@ -173,16 +174,12 @@ export const layers = [
             },
 
             {
-              text: "Each protocol answers a different need. So the real question is not 'which protocol exists' but 'what do I want to do?'",
-              visual: "think-purpose",
-            },
-            {
-              text: "Choose the correct protocol, and your message will be understood.",
-              visual: "decision",
+              text: "Each protocol answers a different need. So the real question is not which protocol exists but what do I want to do?",
+              visual: "packet_v4",
             },
             {
               text: "Now it's your turn to pick the right one.",
-              visual: "decision",
+              visual: "packet_v1",
             },
           ],
         },
@@ -239,21 +236,15 @@ export const layers = [
           type: "scenes",
           scenes: [
             {
-              text: "Good choice. You selected the right protocol.",
+              text: "Good choice. You selected the right protocol. Now the server is ready to understand your request",
+              visual: "packet_v3",
+            },
+
+            {
+              text: "But there's still one problem. You can't just send ideas. You must send a properly structured message.",
               visual: "raw-data",
             },
-            {
-              text: "Now the server is ready to understand your request...",
-              visual: "computer-confused",
-            },
-            {
-              text: "But there's still one problem.",
-              visual: "structure-build",
-            },
-            {
-              text: "You can't just send ideas. You must send a properly structured message.",
-              visual: "structure-build",
-            },
+
             {
               text: "Computers don't understand raw text. They expect data in a precise format.",
               visual: "computer-confused",
@@ -323,6 +314,7 @@ export const layers = [
       },
     ],
   },
+  // Layer 2: Transport Layer
   {
     id: "2",
     name: "Transport Layer",
@@ -333,27 +325,27 @@ export const layers = [
       scenes: [
         {
           text: "You made it past the Application Layer. Your message is structured, but it cannot travel alone.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "/public/assets/videos/layers/TransportLayer.mp4",
         },
         {
           text: "Welcome to the Transport Layer. Here, your data is broken into smaller pieces called segments.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "highlight-transport",
         },
         {
           text: "Each segment is tagged so the receiver can rebuild the original message in the correct order.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "/public/assets/videos/layers/TransportLayer.mp4",
         },
         {
           text: "This layer also chooses HOW your data will travel: reliably with TCP, or quickly with UDP.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "/public/assets/videos/layers/TransportLayer.mp4",
         },
         {
           text: "And it decides WHICH service on the destination should receive it, using ports as doors.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "/public/assets/videos/layers/TransportLayer.mp4",
         },
         {
           text: "Get ready. The Transport Layer is where your message starts its real journey across the network.",
-          video: "/public/assets/videos/layers/TransportLayer.mp4",
+          visual: "/public/assets/videos/layers/TransportLayer.mp4",
         },
       ],
     },
@@ -535,8 +527,7 @@ export const layers = [
             {
               id: "ftp",
               label: "FTP",
-              description:
-                "FTP is for file transfers and runs on top of TCP.",
+              description: "FTP is for file transfers and runs on top of TCP.",
             },
           ],
           answer: "udp",
@@ -589,10 +580,241 @@ export const layers = [
             "Put the steps of the Three-Way Handshake in the correct order.",
           items: [
             { id: "syn", label: "SYN — Client requests connection" },
-            { id: "synack", label: "SYN-ACK — Server acknowledges and replies" },
+            {
+              id: "synack",
+              label: "SYN-ACK — Server acknowledges and replies",
+            },
             { id: "ack", label: "ACK — Client confirms connection" },
           ],
           answer: ["syn", "synack", "ack"],
+        },
+      },
+    ],
+  },
+
+  // Layer 3: Internet Layer{
+  {
+    id: "3",
+    name: "Internet Layer",
+    background: "/public/assets/videos/layers/IPLayer_v2.mp4",
+
+    intro: {
+      type: "scenes",
+      scenes: [
+        {
+          text: "Your segment is ready. Now it needs an address — a destination in the vast digital world.",
+          visual: "segment-ready",
+        },
+        {
+          text: "Welcome to the Internet Layer. This is where your data gets its global identity.",
+          visual: "highlight-internet",
+        },
+        {
+          text: "Think of this layer like the postal system of the internet. Every device needs an address, and every packet needs a route.",
+          visual: "postal-system",
+        },
+        {
+          text: "Here, your segment is wrapped inside a Packet. The packet contains the source and destination IP addresses.",
+          visual: "segment-to-packet",
+        },
+        {
+          text: "With this address, your data can now be routed across thousands of networks to reach the game server.",
+          visual: "routing-overview",
+        },
+      ],
+    },
+
+    topics: [
+      {
+        id: "1",
+        title: "IP Addressing",
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Every device connected to a network has an IP address.",
+              visual: "devices-ip",
+            },
+            {
+              text: "IP stands for Internet Protocol. The address tells the network exactly where a device is located.",
+              visual: "ip-location",
+            },
+            {
+              text: "An IPv4 address looks like this: 192.168.1.10",
+              visual: "ipv4-format",
+            },
+            {
+              text: "It is made of 4 numbers separated by dots. Each number is between 0 and 255.",
+              visual: "ipv4-structure",
+            },
+            {
+              text: "Under the surface, each number is stored as 8 binary digits — called an octet.",
+              visual: "binary-octet",
+            },
+            {
+              text: "For example, 192 in binary is: 11000000",
+              visual: "binary-example",
+            },
+            {
+              text: "Understanding binary helps you read IP addresses at the machine level — the language computers actually use.",
+              visual: "binary-purpose",
+            },
+          ],
+        },
+        mission: {
+          type: "quiz",
+          title: "Convert to binary",
+          question: "What is the binary representation of the number 10?",
+          options: [
+            {
+              id: "correct",
+              label: "00001010",
+              description: "Correct! 10 in binary is 00001010. (8 + 2 = 10 ✓)",
+            },
+            {
+              id: "wrong1",
+              label: "00001100",
+              description: "Incorrect. 00001100 equals 12, not 10.",
+            },
+            {
+              id: "wrong2",
+              label: "00000111",
+              description: "Incorrect. 00000111 equals 7, not 10.",
+            },
+            {
+              id: "wrong3",
+              label: "00010000",
+              description: "Incorrect. 00010000 equals 16, not 10.",
+            },
+          ],
+          answer: "correct",
+        },
+      },
+
+      {
+        id: "2",
+        title: "Subnet Mask",
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "An IP address alone is not enough. You also need to know which part identifies the network.",
+              visual: "network-vs-host",
+            },
+            {
+              text: "That is the role of the subnet mask.",
+              visual: "subnet-intro",
+            },
+            {
+              text: "The subnet mask looks similar to an IP address: for example, 255.255.255.0",
+              visual: "subnet-format",
+            },
+            {
+              text: "Where the subnet mask has 255, that part of the IP address identifies the network.",
+              visual: "subnet-network-part",
+            },
+            {
+              text: "Where the subnet mask has 0, that part identifies the specific device on the network.",
+              visual: "subnet-host-part",
+            },
+            {
+              text: "For example: IP 192.168.1.10 with mask 255.255.255.0 means the network is 192.168.1 and the device is number 10.",
+              visual: "subnet-example",
+            },
+            {
+              text: "The subnet mask helps your device decide: is the destination on my local network, or do I need to go through the router?",
+              visual: "local-or-remote",
+            },
+          ],
+        },
+        mission: {
+          type: "quiz",
+          title: "Identify the network address",
+          question:
+            "A device has IP address 192.168.1.45 and subnet mask 255.255.255.0. What is its network address?",
+          options: [
+            {
+              id: "correct",
+              label: "192.168.1.0",
+              description:
+                "Correct! The last octet becomes 0 because the mask is 0 there. The network is 192.168.1.0",
+            },
+            {
+              id: "wrong1",
+              label: "192.168.0.0",
+              description:
+                "Incorrect. The third octet is 1, not 0. Check the mask again.",
+            },
+            {
+              id: "wrong2",
+              label: "192.168.1.45",
+              description:
+                "Incorrect. That is the full device address, not the network address.",
+            },
+            {
+              id: "wrong3",
+              label: "255.255.255.0",
+              description:
+                "Incorrect. That is the subnet mask itself, not the network address.",
+            },
+          ],
+          answer: "correct",
+        },
+      },
+
+      {
+        id: "3",
+        title: "Routing Decision",
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Now that your packet has an IP address and a subnet mask, your device must make a decision.",
+              visual: "routing-decision",
+            },
+            {
+              text: "Is the destination on the same local network? Or is it somewhere else on the internet?",
+              visual: "same-or-different",
+            },
+            {
+              text: "If the destination is on the same local network, the packet is delivered directly.",
+              visual: "local-delivery",
+            },
+            {
+              text: "If the destination is on a different network, the packet must be sent to the gateway.",
+              visual: "gateway-needed",
+            },
+            {
+              text: "The gateway is usually your router. It knows how to forward packets outside your local network.",
+              visual: "router-gateway",
+            },
+            {
+              text: "The router reads the destination IP address and consults its routing table to decide where to send the packet next.",
+              visual: "routing-table-preview",
+            },
+            {
+              text: "This process repeats at each router along the path until the packet reaches its destination.",
+              visual: "hop-by-hop",
+            },
+          ],
+        },
+        mission: {
+          type: "order",
+          title: "Follow the routing steps",
+          question: "Put the routing decision steps in the correct order:",
+          items: [
+            { id: "step3", label: "Send the packet to the gateway (router)" },
+            { id: "step1", label: "Compare destination IP with subnet mask" },
+            { id: "step4", label: "Packet arrives at destination network" },
+            {
+              id: "step2",
+              label: "Determine if destination is local or remote",
+            },
+          ],
+          answer: ["step1", "step2", "step3", "step4"],
+          successMessage: "Correct! Your packet has been routed successfully.",
+          failMessage:
+            "Incorrect order. Think about what your device checks first.",
         },
       },
     ],

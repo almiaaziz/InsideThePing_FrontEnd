@@ -14,9 +14,9 @@ const CorePanel = () => {
 
   // Transport Layer uses its own intro view (with background video) for the
   // layer introduction. Topic explanations still use the standard view.
-  if (view === "layerIntro" && currentLayer === 2) {
+ /* if (view === "layerIntro" && currentLayer === 2) {
     return <TransportIntroView />;
-  }
+  }*/
 
   return <ExplanationView view={view} />;
 };

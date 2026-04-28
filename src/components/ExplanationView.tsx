@@ -51,6 +51,7 @@ const ExplanationView = ({ view }) => {
   }, [currentScene, scenes]);
 
   if (!scene) return null;
+  console.log("scene", scene);
 
   return (
     <div className="glass-panel rounded-xl p-6 flex-1 flex flex-col gap-6">
