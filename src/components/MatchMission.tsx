@@ -109,8 +109,7 @@ const MatchMission = ({ mission }) => {
 
     setLines(newLines);
   }, [matches]);
-  console.log("mission left", mission.left);
-  console.log("mission right", mission.right);
+
 
   return (
     <div ref={containerRef} className="relative flex flex-col flex-1">

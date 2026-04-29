@@ -14,49 +14,37 @@ const initialProgress = {
   currentTopic: 0,
 };
 
-// 🏁 Per-layer set of completed topic indexes (1-based to match currentTopic).
-// Shape: { [layerId: number]: number[] }  e.g. { 1: [1, 2], 2: [1] }
-const initialCompletedTopics = {};
+// ✅ Array-based structure
+// [
+//   [1,2,3], // layer 1
+//   [1],     // layer 2
+// ]
+const initialCompletedTopics = [[]];
 
-// Helper: add `topicIndex` to the completed list for `layerId` without duplicates.
+// ✅ Safe helper (no holes, no duplicates)
 const addCompleted = (completed, layerId, topicIndex) => {
-  if (!topicIndex || topicIndex < 1) return completed;
-  const existing = completed[layerId] ?? [];
-  if (existing.includes(topicIndex)) return completed;
-  return {
-    ...completed,
-    [layerId]: [...existing, topicIndex].sort((a, b) => a - b),
-  };
-};
 
-// Helper: pick the next unfinished topic in a layer.
-// Returns 0 (layer intro) if no topics are done yet OR all are done.
-// Returns the 1-based index of the first missing topic otherwise.
-const nextUnfinishedTopic = (completed, layerId) => {
-  const layer = layers[layerId - 1];
-  if (!layer) return 0;
-  const done = completed[layerId] ?? [];
-  if (done.length === 0) return 0;
-  if (done.length >= layer.topics.length) return 0;
-  for (let i = 1; i <= layer.topics.length; i++) {
-    if (!done.includes(i)) return i;
+  const newCompleted = [...completed];
+
+  if (!newCompleted[layerId - 1]) {
+    newCompleted[layerId - 1] = [];
   }
-  return 0;
+
+  if (!newCompleted[layerId - 1].includes(topicIndex)) {
+    newCompleted[layerId - 1].push(topicIndex);
+  }
+
+  return newCompleted;
 };
 
 export const useGameStore = create(
   persist(
     (set) => ({
-      // 🎮 Player stats
       player: { ...initialPlayer },
-
-      // 📍 Progression
       progress: { ...initialProgress },
+      completedTopics: [...initialCompletedTopics],
 
-      // ✅ Completed topics, keyed by layer id
-      completedTopics: { ...initialCompletedTopics },
-
-      view: "layerIntro", // "layerIntro" | "topicExplanation" | "mission"
+      view: "layerIntro",
 
       // 🎯 Actions
       increaseXP: (amount) =>
@@ -75,40 +63,24 @@ export const useGameStore = create(
           },
         })),
 
-      nextTopic: () =>
-        set((state) => ({
-          progress: {
-            currentLayer: state.progress.currentLayer,
-            currentTopic: state.progress.currentTopic + 1,
-          },
-        })),
-
-      nextLayer: () =>
-        set((state) => ({
-          progress: {
-            currentLayer: state.progress.currentLayer + 1,
-            currentTopic: 1,
-          },
-        })),
-
       setView: (view) => set({ view }),
 
-      // 🚀 Teleport to a specific layer (1-indexed). Resumes at the next
-      // unfinished topic if the player has partial progress in that layer,
-      // otherwise drops them at the layer intro.
+      // 🔒 Only allow going to unlocked (past) layers
       goToLayer: (layerId) =>
         set((state) => {
-          const resumeAt = nextUnfinishedTopic(state.completedTopics, layerId);
+          const maxUnlockedLayer = state.completedTopics.length;
+
+          if (layerId > maxUnlockedLayer) return state;
+
           return {
             view: "layerIntro",
             progress: {
               currentLayer: layerId,
-              currentTopic: resumeAt,
+              currentTopic: 0,
             },
           };
         }),
 
-      // ✅ Manually mark a topic complete (used by nextStep + available to UI).
       markTopicComplete: (layerId, topicIndex) =>
         set((state) => ({
           completedTopics: addCompleted(
@@ -118,75 +90,99 @@ export const useGameStore = create(
           ),
         })),
 
-      // 🔄 Wipe all saved progress and stats back to defaults.
       resetProgress: () =>
         set(() => ({
           player: { ...initialPlayer },
           progress: { ...initialProgress },
-          completedTopics: { ...initialCompletedTopics },
+          completedTopics: [],
           view: "layerIntro",
         })),
 
+      // 🚀 Core progression logic
       nextStep: () =>
         set((state) => {
+          const { currentLayer, currentTopic } = state.progress;
+          const layer = layers[currentLayer - 1];
+
+          if (!layer) return state;
+
+          // 1️⃣ Intro → first topic
           if (state.view === "layerIntro") {
             return {
               view: "topicExplanation",
               progress: {
-                ...state.progress,
-                currentTopic: state.progress.currentTopic + 1,
+                currentLayer,
+                currentTopic: 1,
               },
             };
           }
-          if (state.view === "topicExplanation") return { view: "mission" };
+
+          // 2️⃣ Explanation → mission
+          if (state.view === "topicExplanation") {
+            return { view: "mission" };
+          }
+
+          // 3️⃣ Mission → validate progress
           if (state.view === "mission") {
-            // Finishing a mission completes the current topic.
-            const completedTopics = addCompleted(
+            const updatedCompleted = addCompleted(
               state.completedTopics,
-              state.progress.currentLayer,
-              state.progress.currentTopic,
+              currentLayer,
+              currentTopic,
             );
 
-            if (
-              state.progress.currentTopic <
-              layers[state.progress.currentLayer - 1].topics.length
-            ) {
+            const isLastTopic = currentTopic >= layer.topics.length;
+
+            // 🔁 Next topic
+            if (!isLastTopic) {
               return {
-                completedTopics,
+                completedTopics: updatedCompleted,
                 view: "topicExplanation",
                 progress: {
-                  ...state.progress,
-                  currentTopic: state.progress.currentTopic + 1,
-                },
-              };
-            } else {
-              return {
-                completedTopics,
-                view: "layerIntro",
-                progress: {
-                  currentLayer: state.progress.currentLayer + 1,
-                  currentTopic: 0,
+                  currentLayer,
+                  currentTopic: currentTopic + 1,
                 },
               };
             }
+
+            // 🚀 Next layer
+            return {
+              completedTopics: [...updatedCompleted , []],
+              view: "layerIntro",
+              progress: {
+                currentLayer: currentLayer + 1,
+                currentTopic: 0,
+              },
+            };
           }
+
+          return state;
         }),
     }),
     {
       name: "inside-the-ping:save",
-      version: 2,
+      version: 3,
+
       storage: createJSONStorage(() => localStorage),
-      // Only persist the player's progress + stats, not transient UI state.
+
       partialize: (state) => ({
         player: state.player,
         progress: state.progress,
         completedTopics: state.completedTopics,
       }),
+
+      // 🔄 Migrate object → array
       migrate: (persistedState, version) => {
-        // v1 → v2: introduce the completedTopics map.
-        if (version < 2 && persistedState && !persistedState.completedTopics) {
-          persistedState.completedTopics = {};
+        if (version < 3 && persistedState) {
+          const old = persistedState.completedTopics || {};
+          const newFormat = [];
+
+          Object.entries(old).forEach(([layerId, topics]) => {
+            newFormat[layerId - 1] = topics;
+          });
+
+          persistedState.completedTopics = newFormat;
         }
+
         return persistedState;
       },
     },
