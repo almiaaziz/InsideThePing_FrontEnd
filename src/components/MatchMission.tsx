@@ -2,10 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { useGameStore } from "../game/store";
 import { shuffle } from "@/lib/utils";
+import { MissionResult } from "./MissionResult";
 
 const MatchMission = ({ mission }) => {
   const nextStep = useGameStore((state) => state.nextStep);
-  const increaseXP = useGameStore((state) => state.increaseXP);
+
+  const updateStats = useGameStore((s) => s.updateStats);
+  const [tries, setTries] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const [selectedLeft, setSelectedLeft] = useState(null);
   const [matches, setMatches] = useState({});
@@ -43,6 +47,9 @@ const MatchMission = ({ mission }) => {
   const isComplete = Object.keys(matches).length === mission.left.length;
 
   const checkAnswers = () => {
+
+  const nextTries = tries + 1;
+  setTries(nextTries);    
     let correct = true;
 
     for (const key in mission.answer) {
@@ -53,7 +60,7 @@ const MatchMission = ({ mission }) => {
     }
     if (allCorrect) {
       setValidated(true);
-      increaseXP(15);
+      updateStats(nextTries);
     } else {
       setError(true);
       setValidated(true); // ← add this so error styles actually apply
@@ -110,34 +117,35 @@ const MatchMission = ({ mission }) => {
     setLines(newLines);
   }, [matches]);
 
-
   return (
-    <div ref={containerRef} className="relative flex flex-col flex-1">
-      {/* SVG LINES */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        {lines.map((line, i) => (
-          <line
-            key={i}
-            x1={line.x1}
-            y1={line.y1}
-            x2={line.x2}
-            y2={line.y2}
-            stroke={validated ? (error ? "red" : "green") : "cyan"}
-            strokeWidth="2"
-          />
-        ))}
-      </svg>
+    <>
+      {!showResult ? (
+        <div ref={containerRef} className="relative flex flex-col flex-1">
+          {/* SVG LINES */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            {lines.map((line, i) => (
+              <line
+                key={i}
+                x1={line.x1}
+                y1={line.y1}
+                x2={line.x2}
+                y2={line.y2}
+                stroke={validated ? (error ? "red" : "green") : "cyan"}
+                strokeWidth="2"
+              />
+            ))}
+          </svg>
 
-      {/* GRID */}
-      <div className="grid grid-cols-2 gap-20 flex-1">
-        {/* LEFT */}
-        <div className="flex flex-col flex-1">
-          {leftItems.map((item) => (
-            <button
-              key={item.id}
-              ref={(el) => (leftRefs.current[item.id] = el)}
-              onClick={() => handleLeftClick(item.id)}
-              className={`flex-1 m-1 glass-panel rounded-lg flex items-center justify-center
+          {/* GRID */}
+          <div className="grid grid-cols-2 gap-20 flex-1">
+            {/* LEFT */}
+            <div className="flex flex-col flex-1">
+              {leftItems.map((item) => (
+                <button
+                  key={item.id}
+                  ref={(el) => (leftRefs.current[item.id] = el)}
+                  onClick={() => handleLeftClick(item.id)}
+                  className={`flex-1 m-1 glass-panel rounded-lg flex items-center justify-center
   ${
     selectedLeft === item.id
       ? "neon-border-cyan"
@@ -151,23 +159,23 @@ const MatchMission = ({ mission }) => {
   }
   ${error && validated && isLeftMatched(item.id) ? "animate-[glitch_0.4s_ease-in-out]" : ""}
 `}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
 
-        {/* RIGHT */}
-        <div className="flex flex-col flex-1">
-          {rightItems.map((item) => {
-            const isMatched = Object.values(matches).includes(item.id);
+            {/* RIGHT */}
+            <div className="flex flex-col flex-1">
+              {rightItems.map((item) => {
+                const isMatched = Object.values(matches).includes(item.id);
 
-            return (
-              <button
-                key={item.id}
-                ref={(el) => (rightRefs.current[item.id] = el)}
-                onClick={() => handleRightClick(item.id)}
-                className={`flex-1 m-1 glass-panel rounded-lg flex items-center justify-center
+                return (
+                  <button
+                    key={item.id}
+                    ref={(el) => (rightRefs.current[item.id] = el)}
+                    onClick={() => handleRightClick(item.id)}
+                    className={`flex-1 m-1 glass-panel rounded-lg flex items-center justify-center
   ${
     isRightMatched(item.id)
       ? validated
@@ -179,37 +187,39 @@ const MatchMission = ({ mission }) => {
   }
   ${error && validated && isRightMatched(item.id) ? "animate-[glitch_0.4s_ease-in-out]" : ""}
 `}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* VALIDATE */}
+          {isComplete && !validated && (
+            <button
+              onClick={checkAnswers}
+              className="glass-panel neon-border-cyan rounded-lg px-4 py-3 mt-4"
+            >
+              VALIDATE
+            </button>
+          )}
+
+          {/* CONTINUE */}
+          {validated && (
+            <button
+              onClick={() => setShowResult(true)}
+              className={`glass-panel  rounded-lg px-4 py-3 mt-4 flex items-center justify-center gap-2
+            ${error ? "neon-border-red" : "neon-border-green"}`}
+            >
+              CONTINUE <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
-      </div>
-
-      {/* VALIDATE */}
-      {isComplete && !validated && (
-        <button
-          onClick={checkAnswers}
-          className="glass-panel neon-border-cyan rounded-lg px-4 py-3 mt-4"
-        >
-          VALIDATE
-        </button>
+      ) : (
+        <MissionResult tries={tries} onContinue={nextStep} />
       )}
-
-      {/* CONTINUE */}
-      {validated && (
-        <button
-          onClick={nextStep}
-          className={`glass-panel  rounded-lg px-4 py-3 mt-4 flex items-center justify-center gap-2
-            ${error ? "neon-border-red" : "neon-border-green"}`
-
-          }
-        >
-          CONTINUE <ArrowRight className="w-4 h-4" />
-        </button>
-      )}
-    </div>
+    </>
   );
 };
 

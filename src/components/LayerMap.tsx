@@ -60,6 +60,7 @@ const LayerMap = ({ onSelect }: { onSelect?: () => void }) => {
       </h2>
 
       {layers.map((layer, i) => {
+
         const layerId = i + 1;
         const totalTopics = layerData[i]?.topics.length ?? 0;
 
@@ -67,7 +68,7 @@ const LayerMap = ({ onSelect }: { onSelect?: () => void }) => {
         const doneCount = doneTopics.length;
 
         const isCurrent = currentLayer === layerId;
-        const isUnlocked = layerId <= maxUnlockedLayer;
+        const isUnlocked = (layerId <= maxUnlockedLayer) || isCurrent;
         const isFullyComplete =
           doneCount > 0 && doneCount === totalTopics;
 

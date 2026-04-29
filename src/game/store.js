@@ -2,11 +2,12 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { layers } from "./data";
 
-const initialPlayer = {
+const initialStats = {
   xp: 0,
+  latency: 20,
+  totalAttempts: 0,
+  totalCorrect: 0,
   accuracy: 100,
-  latency: 0,
-  integrity: 100,
 };
 
 const initialProgress = {
@@ -23,7 +24,6 @@ const initialCompletedTopics = [[]];
 
 // ✅ Safe helper (no holes, no duplicates)
 const addCompleted = (completed, layerId, topicIndex) => {
-
   const newCompleted = [...completed];
 
   if (!newCompleted[layerId - 1]) {
@@ -40,28 +40,44 @@ const addCompleted = (completed, layerId, topicIndex) => {
 export const useGameStore = create(
   persist(
     (set) => ({
-      player: { ...initialPlayer },
+      stats: { ...initialStats },
       progress: { ...initialProgress },
       completedTopics: [...initialCompletedTopics],
 
       view: "layerIntro",
 
-      // 🎯 Actions
-      increaseXP: (amount) =>
-        set((state) => ({
-          player: {
-            ...state.player,
-            xp: state.player.xp + amount,
-          },
-        })),
+      updateStats: (tries) =>
+        set((state) => {
+          let { xp, latency, totalAttempts, totalCorrect } = state.stats;
 
-      decreaseIntegrity: (amount) =>
-        set((state) => ({
-          player: {
-            ...state.player,
-            integrity: state.player.integrity - amount,
-          },
-        })),
+          // XP
+          if (tries === 1) xp += 10;
+          else if (tries === 2) xp += 5;
+          else if (tries === 3) xp += 1;
+
+          // Accuracy
+          totalAttempts += tries;
+          totalCorrect += 1;
+          const accuracy = (totalCorrect / totalAttempts) * 100;
+
+          // Latency
+          latency += (tries - 1) * 5;
+
+          if (tries === 1) {
+            latency = Math.max(20, latency - 5);
+          }
+          console.log("Updated stats:", { xp, latency, totalAttempts, totalCorrect, accuracy });
+
+          return {
+            stats: {
+              xp,
+              latency,
+              totalAttempts,
+              totalCorrect,
+              accuracy,
+            },
+          };
+        }),
 
       setView: (view) => set({ view }),
 
@@ -92,7 +108,7 @@ export const useGameStore = create(
 
       resetProgress: () =>
         set(() => ({
-          player: { ...initialPlayer },
+          stats: { ...initialStats },
           progress: { ...initialProgress },
           completedTopics: [],
           view: "layerIntro",
@@ -146,7 +162,7 @@ export const useGameStore = create(
 
             // 🚀 Next layer
             return {
-              completedTopics: [...updatedCompleted , []],
+              completedTopics: [...updatedCompleted, []],
               view: "layerIntro",
               progress: {
                 currentLayer: currentLayer + 1,
@@ -165,7 +181,7 @@ export const useGameStore = create(
       storage: createJSONStorage(() => localStorage),
 
       partialize: (state) => ({
-        player: state.player,
+        stats: state.stats,
         progress: state.progress,
         completedTopics: state.completedTopics,
       }),

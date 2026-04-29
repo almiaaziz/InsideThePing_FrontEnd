@@ -11,7 +11,7 @@ interface Metric {
 
 const StatsBar = () => {
   const { xp, accuracy, latency, integrity } = useGameStore(
-    (state) => state.player,
+    (state) => state.stats,
   );
 
   const metrics: Metric[] = [
@@ -23,26 +23,27 @@ const StatsBar = () => {
     },
     {
       label: "ACCURACY",
-      value: `${accuracy}%`,
+      value: `${accuracy.toFixed(1)}%`,
       icon: <Target className="w-4 h-4" />,
       color: "glow-text-green",
     },
-    {
+   {
       label: "LATENCY",
       value: `${latency}ms`,
       icon: <Clock className="w-4 h-4" />,
       color: "glow-text-orange",
     },
+    /*
     {
       label: "INTEGRITY",
       value: `${integrity}%`,
       icon: <Shield className="w-4 h-4" />,
       color: "glow-text-red",
-    },
+    },*/
   ];
 
   return (
-    <div className="glass-panel rounded-lg px-4 py-3 flex items-center justify-between gap-4 w-80">
+    <div className="glass-panel rounded-lg px-4 py-3 flex items-center justify-evenly gap-4 w-80">
       {metrics.map((m) => (
         <div key={m.label} className="flex flex-col items-center gap-0.5">
           <span className={m.color}>{m.icon}</span>

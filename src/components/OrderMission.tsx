@@ -2,10 +2,14 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useGameStore } from "../game/store";
 import { shuffle } from "@/lib/utils";
+import { MissionResult } from "./MissionResult";
 
 const OrderMission = ({ mission }) => {
   const nextStep = useGameStore((state) => state.nextStep);
-  const increaseXP = useGameStore((state) => state.increaseXP);
+
+  const updateStats = useGameStore((s) => s.updateStats);
+  const [tries, setTries] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const [items, setItems] = useState(() => shuffle([...mission.items]));
 
@@ -33,13 +37,18 @@ const OrderMission = ({ mission }) => {
   };
 
   const checkOrder = () => {
+
+  const nextTries = tries + 1;
+  setTries(nextTries);
+
     const currentOrder = items.map((i) => i.id);
     const isCorrect =
       JSON.stringify(currentOrder) === JSON.stringify(mission.answer);
 
     if (isCorrect) {
+      updateStats(nextTries);
+
       setValidated(true);
-      increaseXP(20);
     } else {
       setError(true);
 
@@ -51,19 +60,19 @@ const OrderMission = ({ mission }) => {
   };
 
   return (
-    <div className="flex flex-col flex-1 gap-4">
-    
-
-      {/* DRAG LIST */}
-      <div className="flex flex-col flex-1 gap-5">
-        {items.map((item, index) => (
-          <div
-            key={item.id}
-            draggable
-            onDragStart={(e) => handleDragStart(e, index)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, index)}
-            className={`glass-panel rounded-lg p-4 cursor-move flex-1 flex items-center justify-center transition-all
+    <>
+      {!showResult ? (
+        <div className="flex flex-col flex-1 gap-4">
+          {/* DRAG LIST */}
+          <div className="flex flex-col flex-1 gap-5">
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+                className={`glass-panel rounded-lg p-4 cursor-move flex-1 flex items-center justify-center transition-all
 
       ${
         status === "success"
@@ -74,34 +83,37 @@ const OrderMission = ({ mission }) => {
       }
 
     `}
-          >
-            {item.label}
+              >
+                {item.label}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* VALIDATE */}
-      {!validated && (
-        <button
-          onClick={checkOrder}
-          className={`glass-panel neon-border-cyan rounded-lg px-4 py-3
-            ${status === "error" ? "neon-border-red animate-[glitch_0.4s_ease-in-out]" : ""}`
-          }
-        >
-          VALIDATE
-        </button>
-      )}
+          {/* VALIDATE */}
+          {!validated && (
+            <button
+              onClick={checkOrder}
+              className={`glass-panel neon-border-cyan rounded-lg px-4 py-3
+            ${status === "error" ? "neon-border-red animate-[glitch_0.4s_ease-in-out]" : ""}`}
+            >
+              VALIDATE
+            </button>
+          )}
 
-      {/* CONTINUE */}
-      {validated && (
-        <button
-          onClick={nextStep}
-          className="glass-panel neon-border-green rounded-lg px-4 py-3 flex items-center justify-center gap-2"
-        >
-          CONTINUE <ArrowRight className="w-4 h-4" />
-        </button>
+          {/* CONTINUE */}
+          {validated && (
+            <button
+              onClick={() => setShowResult(true)}
+              className="glass-panel neon-border-green rounded-lg px-4 py-3 flex items-center justify-center gap-2"
+            >
+              CONTINUE <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      ) : (
+        <MissionResult tries={tries} onContinue={nextStep} />
       )}
-    </div>
+    </>
   );
 };
 
