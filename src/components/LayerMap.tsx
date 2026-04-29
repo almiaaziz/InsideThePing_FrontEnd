@@ -18,7 +18,7 @@ interface LayerNode {
   borderClass: string;
 }
 
-const LayerMap = () => {
+const LayerMap = ({ onSelect }: { onSelect?: () => void }) => {
   const { currentLayer } = useGameStore((state) => state.progress);
   const completedTopics = useGameStore((state) => state.completedTopics);
   const goToLayer = useGameStore((state) => state.goToLayer);
@@ -75,6 +75,7 @@ const LayerMap = () => {
           if (!isUnlocked) return;
           goToLayer(layerId);
           navigate("/game");
+          onSelect?.();
         };
 
         return (
@@ -132,9 +133,8 @@ const LayerMap = () => {
                     <span>
                       {isCurrent
                         ? "CURRENT"
-                        : isFullyComplete
-                        ? "REPLAY"
-                        : "RESUME"}
+                        :"REPLAY"
+                    }
                     </span>
                   </>
                 ) : (

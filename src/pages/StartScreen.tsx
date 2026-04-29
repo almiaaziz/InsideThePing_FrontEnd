@@ -83,8 +83,7 @@ const StartScreen = () => {
             className="text-[10px] text-muted-foreground font-mono tracking-widest -mt-6 animate-fade-in"
             style={{ animationDelay: "0.4s" }}
           >
-            RESUMING AT — {currentLayerName.toUpperCase()} · TOPIC{" "}
-            {Math.max(currentTopic, 1)}
+            RESUMING AT — {currentLayerName.toUpperCase()} LAYER
           </div>
         )}
 

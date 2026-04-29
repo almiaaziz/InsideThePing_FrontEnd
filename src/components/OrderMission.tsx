@@ -52,11 +52,7 @@ const OrderMission = ({ mission }) => {
 
   return (
     <div className="flex flex-col flex-1 gap-4">
-      {/* HEADER */}
-      <div className="glass-panel rounded-xl p-4">
-        <h2 className="text-lg text-cyan-400">{mission.title}</h2>
-        <p className="text-sm text-muted-foreground">{mission.question}</p>
-      </div>
+    
 
       {/* DRAG LIST */}
       <div className="flex flex-col flex-1 gap-5">

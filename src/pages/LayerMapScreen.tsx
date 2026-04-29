@@ -17,7 +17,7 @@ const LayerMapScreen = () => {
 
         <button
           onClick={() => navigate("/game")}
-          className="mt-8 glass-panel neon-border-cyan rounded-xl px-8 py-3 font-display text-sm tracking-widest text-primary flex items-center gap-2 hover:scale-105 transition-transform"
+          className="mt-5 glass-panel neon-border-cyan rounded-xl px-8 py-3 font-display text-sm tracking-widest text-primary flex items-center gap-2 hover:scale-105 transition-transform"
         >
           <ArrowLeft className="w-4 h-4" /> BACK TO MISSION
         </button>

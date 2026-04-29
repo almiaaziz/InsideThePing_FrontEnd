@@ -9,6 +9,7 @@ import LayerMapScreen from "./pages/LayerMapScreen.tsx";
 import FinalScreen from "./pages/FinalScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import StoryIntro from "./pages/StoryIntro.tsx";
+import About from "./pages/About.tsx";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/intro" element={<StoryIntro />} />
           <Route path="/game" element={<GameHub />} />
           <Route path="/map" element={<LayerMapScreen />} />
+          <Route path="/about" element={<About />} />
           <Route path="/complete" element={<FinalScreen />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

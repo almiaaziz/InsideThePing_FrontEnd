@@ -753,7 +753,7 @@ export const FtpTransferIllustration = () => (
     {/* Client PC */}
     <g transform="translate(60, 110)">
       <rect width="180" height="140" rx="8" fill="hsl(220 30% 8%)" stroke="hsl(200 100% 60%)" strokeWidth="2" />
-      <rect x="14" y="14" width="152" height="80" rx="4" fill="hsl(220 30% 4%)" />
+      <rect x="14" y="14" width="152" height="80" rx="4" fill="hsl(220 30% 8%)" />
       {/* folder icon */}
       <rect x="36" y="24" width="100" height="60" rx="4" fill="hsl(45 100% 50% / 0.2)" stroke="hsl(45 100% 55%)" strokeWidth="1.5" />
       <rect x="36" y="18" width="46" height="12" rx="3" fill="hsl(45 100% 55%)" />

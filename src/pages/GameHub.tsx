@@ -1,5 +1,4 @@
 import ParticleField from "@/components/ParticleField";
-import HUDBar from "@/components/HUDBar";
 import CompanionChat from "@/components/CompanionChat";
 import { useGameStore } from "../game/store.js";
 import { layers } from "../game/data";
@@ -8,6 +7,8 @@ import CorePanel from "@/components/CorePanel.js";
 import LayerTransition from "@/components/LayerTransition";
 import { useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
+import StatsBar from "@/components/StatsBar.js";
+import NavBar from "@/components/NavBar.js";
 
 const GameHub = () => {
   const { currentLayer } = useGameStore((state) => state.progress);
@@ -40,21 +41,22 @@ const GameHub = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden">
-
-      <BackgroundVideo
-        key={backgroundLayer}
-        src={backgroundLayer}
-      />
+      <BackgroundVideo key={backgroundLayer} src={backgroundLayer} />
 
       <ParticleField />
 
       <div className="relative z-10 flex flex-col min-h-screen p-4 gap-4">
-        <HUDBar />
-
+        {/* Top row mirroring GameHub layout */}
+        <div className="flex gap-4 animate-fade-in">
+          <div className="flex-1 flex">
+            <NavBar />
+          </div>
+          <StatsBar />
+        </div>
         <div className="flex-1 flex gap-4">
           <CorePanel />
-          <CompanionChat />
-        </div>
+{/*          <CompanionChat />
+*/}        </div>
       </div>
 
       {transition && (
@@ -64,7 +66,6 @@ const GameHub = () => {
           onComplete={() => setTransition(null)}
         />
       )}
-
     </div>
   );
 };

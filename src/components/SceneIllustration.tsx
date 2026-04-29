@@ -75,6 +75,11 @@ import {
   ConnectionOpenIllustration,
   NoHandshakeIllustration,
   CorrectDoorIllustration,
+  TransportIntro3Illustration,
+  TransportIntro1Illustration,
+  TransportIntro4Illustration,
+  TransportIntro5Illustration,
+  TransportIntro6Illustration,
 } from "./layersSI/TransportLayerIllustrations";
 
 import {
@@ -105,6 +110,7 @@ import {
   RoutingTablePreviewIllustration,
   HopByHopIllustration,
 } from "./layersSI/InternetLayerIllustrations"; 
+import { PacketReadyIllustration, HighlightNetworkAccessIllustration, PhysicalWorldIllustration, PacketToFrameIllustration, IpVsMacIllustration, MacIdentityIllustration, IpMacAnalogyIllustration, NextHopMacIllustration, ArpBridgeIllustration, SwitchDecisionIllustration, FinalFrontierIllustration, PacketV2Illustration, ArpBroadcastIllustration, ArpBroadcastWaveIllustration, ArpCacheIllustration, ArpIntroIllustration, ArpReplyIllustration, ArpResponseIllustration, FrameReadyIllustration, IpToMacProblemIllustration, MacFactoryIllustration, MacFixedIllustration, MacFormatIllustration, MacIpTogetherIllustration, MacMeaningIllustration, MacOuiDeviceIllustration, MacStructureIllustration, NicIntroIllustration, MacLocalScopeIllustration, CamTableIllustration, FrameCheckIllustration, FrameCompleteIllustration, FrameEnvelopeIllustration, FrameHeaderIllustration, FrameIntroIllustration, FramePayloadIllustration, FrameStructureIllustration, FrameToSignalIllustration, FrameTrailerIllustration, FrameUnitIllustration, JourneyCompleteIllustration, SwitchDevicesIllustration, SwitchEfficientIllustration, SwitchFloodIllustration, SwitchForwardIllustration, SwitchIntroIllustration, SwitchLearnsIllustration, SwitchReadsMacIllustration, SwitchVsHubIllustration } from "./layersSI/NetworkAccessLayerIllustrations";
 // ────────────────────────────────────────────────────────────
 // Shared bits
 // ────────────────────────────────────────────────────────────
@@ -359,7 +365,11 @@ const registry: Record<string, () => JSX.Element> = {
 
   //Transport Layer — Intro
   "highlight-transport": () => HighlightLayerIllustration({ highlightedId: 1 }),
-
+  "transport-intro-1": TransportIntro1Illustration,
+  "transport-intro-3": TransportIntro3Illustration,
+  "transport-intro-4": TransportIntro4Illustration,
+  "transport-intro-5": TransportIntro5Illustration,
+  "transport-intro-6": TransportIntro6Illustration,
   // Transport › Ports
   "multiple-services": MultipleServicesIllustration,
   "doors": DoorsIllustration,
@@ -397,7 +407,7 @@ const registry: Record<string, () => JSX.Element> = {
 
     // Internet Layer — Intro
   "segment-ready":    SegmentReadyIllustration,
-    "highlight-internet": () => HighlightLayerIllustration({ highlightedId: 2 }),
+  "highlight-internet": () => HighlightLayerIllustration({ highlightedId: 2 }),
 
   "welcome-internet": WelcomeInternetIllustration,
   "postal-system":    PostalSystemIllustration,
@@ -429,7 +439,69 @@ const registry: Record<string, () => JSX.Element> = {
   "gateway-needed":           GatewayNeededIllustration,
   "router-gateway":           RouterGatewayIllustration,
   "routing-table-preview":    RoutingTablePreviewIllustration,
-  "hop-by-hop":               HopByHopIllustration
+  "hop-by-hop":               HopByHopIllustration,
+
+
+  // network access layer 
+
+  "packet-ready":            PacketReadyIllustration,
+  "highlight-network-access":() => HighlightLayerIllustration({ highlightedId: 3 }),
+  "physical-world":          PhysicalWorldIllustration,
+  "packet-to-frame":         PacketToFrameIllustration,
+  "ip-vs-mac":               IpVsMacIllustration,
+  "mac-identity":            MacIdentityIllustration,
+  "ip-mac-analogy":          IpMacAnalogyIllustration,
+  "next-hop-mac":            NextHopMacIllustration,
+  "arp-bridge":              ArpBridgeIllustration,
+  "switch-decision":         SwitchDecisionIllustration,
+  "final-frontier":          FinalFrontierIllustration,
+
+   // Topic 1 — MAC Addresses
+  "nic-intro":       NicIntroIllustration,
+  "mac-factory":     MacFactoryIllustration,
+  "mac-meaning":     MacMeaningIllustration,
+  "mac-format":      MacFormatIllustration,
+  "mac-structure":   MacStructureIllustration,
+  "mac-oui-device":  MacOuiDeviceIllustration,
+  "mac-fixed":       MacFixedIllustration,
+  "mac-local-scope": MacLocalScopeIllustration,
+  "mac-ip-together": MacIpTogetherIllustration,
+
+  // Topic 2 — ARP
+  "ip-to-mac-problem":  IpToMacProblemIllustration,
+  "arp-intro":          ArpIntroIllustration,
+  "arp-broadcast":      ArpBroadcastIllustration,
+  "arp-broadcast-wave": ArpBroadcastWaveIllustration,
+  "arp-reply":          ArpReplyIllustration,
+  "arp-response":       ArpResponseIllustration,
+  "arp-cache":          ArpCacheIllustration,
+  "frame-ready":        FrameReadyIllustration,
+
+
+  // Topic 3 — Switching
+  "switch-intro":      SwitchIntroIllustration,
+  "switch-devices":    SwitchDevicesIllustration,
+  "switch-vs-hub":     SwitchVsHubIllustration,
+  "switch-reads-mac":  SwitchReadsMacIllustration,
+  "cam-table":         CamTableIllustration,
+  "switch-forward":    SwitchForwardIllustration,
+  "switch-flood":      SwitchFloodIllustration,
+  "switch-learns":     SwitchLearnsIllustration,
+  "switch-efficient":  SwitchEfficientIllustration,
+
+  // Topic 4 — Frames
+  "frame-intro":      FrameIntroIllustration,
+  "frame-unit":       FrameUnitIllustration,
+  "frame-envelope":   FrameEnvelopeIllustration,
+  "frame-structure":  FrameStructureIllustration,
+  "frame-header":     FrameHeaderIllustration,
+  "frame-payload":    FramePayloadIllustration,
+  "frame-trailer":    FrameTrailerIllustration,
+  "frame-check":      FrameCheckIllustration,
+  "frame-complete":   FrameCompleteIllustration,
+  "frame-to-signal":  FrameToSignalIllustration,
+  "journey-complete": JourneyCompleteIllustration,
+
 };
 
 export const hasSceneIllustration = (visual: string): boolean =>

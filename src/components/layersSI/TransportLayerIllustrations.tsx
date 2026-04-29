@@ -3493,3 +3493,320 @@ export const NoHandshakeIllustration = () => (
     </text>
   </svg>
 );
+
+export const TransportIntro1Illustration = () => (
+  <svg viewBox="0 0 800 400" className="w-full h-auto" role="img" aria-label="Message structured but cannot travel alone">
+    <GridDefs id="grid-ti1" />
+    <rect width="800" height="400" fill="url(#grid-ti1)" opacity="0.3" />
+ 
+    {/* Layer stack — Application fading out, Transport lighting up */}
+    {[
+      { y: 60,  name: "APPLICATION",   color: "200 100% 55%", state: "done"   },
+      { y: 150, name: "TRANSPORT",     color: "140 100% 50%", state: "active" },
+      { y: 240, name: "INTERNET",      color: "30  100% 55%", state: "dim"    },
+      { y: 330, name: "NETWORK ACCESS",color: "0   80%  55%", state: "dim"    },
+    ].map((layer, i) => {
+      const opacity = layer.state === "active" ? 1 : layer.state === "done" ? 0.35 : 0.2;
+      const sw = layer.state === "active" ? "2.5" : "1";
+      return (
+        <g key={i} opacity={opacity}>
+          <rect x="200" y={layer.y} width="400" height="65" rx="6"
+            fill={`hsl(${layer.color} / 0.15)`}
+            stroke={`hsl(${layer.color})`} strokeWidth={sw} />
+          <text x="400" y={layer.y + 40} textAnchor="middle"
+            fill={`hsl(${layer.color})`} fontSize="15" fontFamily="monospace"
+            fontWeight="bold" letterSpacing="2">{layer.name}</text>
+          {layer.state === "done" && (
+            <text x="570" y={layer.y + 40} fill={`hsl(${layer.color})`}
+              fontSize="16" fontFamily="monospace">✓</text>
+          )}
+          {layer.state === "active" && (
+            <animate attributeName="opacity" values="0.6;1;0.6"
+              dur="2s" repeatCount="indefinite" />
+          )}
+        </g>
+      );
+    })}
+ 
+    {/* Structured message leaving Application */}
+    <rect width="110" height="40" rx="6" fill="hsl(200 100% 55%)" stroke="hsl(200 100% 85%)" strokeWidth="1.5">
+      <animate attributeName="x" from="600" to="605" dur="0.1s" fill="freeze" />
+      <animate attributeName="y" from="80" to="165" dur="1.8s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="1.8s" repeatCount="indefinite" />
+    </rect>
+    <text fontSize="10" fontFamily="monospace" fill="hsl(220 30% 5%)" fontWeight="bold" textAnchor="middle">
+      <animate attributeName="x" values="660;660" dur="1.8s" repeatCount="indefinite" />
+      <animate attributeName="y" from="105" to="190" dur="1.8s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="1.8s" repeatCount="indefinite" />
+      MESSAGE
+    </text>
+ 
+    <text x="400" y="378" textAnchor="middle" fill="hsl(140 100% 55%)" fontSize="11" fontFamily="monospace">
+      structured · but needs to be broken down to travel
+    </text>
+  </svg>
+);
+ 
+
+export const TransportIntro3Illustration = () => (
+  <svg viewBox="0 0 800 400" className="w-full h-auto" role="img" aria-label="Segments tagged with sequence numbers">
+    <GridDefs id="grid-ti3" />
+    <rect width="800" height="400" fill="url(#grid-ti3)" opacity="0.3" />
+ 
+    <text x="400" y="46" textAnchor="middle" fill="hsl(140 100% 75%)" fontSize="14"
+      fontFamily="monospace" letterSpacing="3">SEGMENTS · TAGGED · IN ORDER</text>
+ 
+    {/* Original message */}
+    <rect x="60" y="110" width="200" height="70" rx="8"
+      fill="hsl(200 100% 55% / 0.12)" stroke="hsl(200 100% 55%)" strokeWidth="2" />
+    <text x="160" y="148" textAnchor="middle" fill="hsl(200 100% 80%)" fontSize="14"
+      fontFamily="monospace" fontWeight="bold">MESSAGE</text>
+    <text x="160" y="167" textAnchor="middle" fill="hsl(200 100% 55%)" fontSize="10"
+      fontFamily="monospace">original data</text>
+ 
+    {/* Split arrow */}
+    <line x1="262" y1="145" x2="320" y2="145" stroke="hsl(0 0% 40%)" strokeWidth="1.5" />
+    {[100, 145, 190].map((y, i) => (
+      <line key={i} x1="320" y1="145" x2="360" y2={y}
+        stroke="hsl(140 100% 50%)" strokeWidth="1.5" />
+    ))}
+ 
+    {/* Segments with sequence tags */}
+    {[
+      { seq: "SEQ: 1", y: 76,  label: "Hello," },
+      { seq: "SEQ: 2", y: 121, label: "world" },
+      { seq: "SEQ: 3", y: 166, label: "!" },
+    ].map((seg, i) => (
+      <g key={i}>
+        <rect x="360" y={seg.y} width="180" height="58" rx="6"
+          fill="hsl(140 100% 50% / 0.12)" stroke="hsl(140 100% 55%)" strokeWidth="2">
+          <animate attributeName="stroke-opacity" values="0.4;1;0.4"
+            dur="2s" begin={`${i * 0.5}s`} repeatCount="indefinite" />
+        </rect>
+        {/* Sequence badge */}
+        <rect x="360" y={seg.y} width="80" height="20" rx="4"
+          fill="hsl(140 100% 55%)" />
+        <text x="400" y={seg.y + 14} textAnchor="middle"
+          fill="hsl(220 30% 5%)" fontSize="10" fontFamily="monospace" fontWeight="bold">{seg.seq}</text>
+        <text x="450" y={seg.y + 38} textAnchor="middle"
+          fill="hsl(140 100% 75%)" fontSize="13" fontFamily="monospace">{seg.label}</text>
+      </g>
+    ))}
+ 
+    {/* Reassemble arrow */}
+    {[100, 145, 190].map((y, i) => (
+      <line key={i} x1="544" y1={y + 28} x2="580" y2="180"
+        stroke="hsl(30 100% 55%)" strokeWidth="1.5" />
+    ))}
+    <line x1="580" y1="180" x2="640" y2="180" stroke="hsl(30 100% 55%)" strokeWidth="2" />
+    <polygon points="636,172 654,180 636,188" fill="hsl(30 100% 55%)" />
+ 
+    {/* Rebuilt */}
+    <rect x="654" y="148" width="116" height="64" rx="8"
+      fill="hsl(30 100% 55% / 0.12)" stroke="hsl(30 100% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
+    </rect>
+    <text x="712" y="177" textAnchor="middle" fill="hsl(30 100% 80%)" fontSize="12"
+      fontFamily="monospace" fontWeight="bold">REBUILT</text>
+    <text x="712" y="198" textAnchor="middle" fill="hsl(30 100% 55%)" fontSize="10"
+      fontFamily="monospace">✓ in order</text>
+ 
+    <text x="400" y="358" textAnchor="middle" fill="hsl(140 100% 55%)" fontSize="11" fontFamily="monospace">
+      sequence numbers let the receiver reassemble correctly
+    </text>
+  </svg>
+);
+ 
+
+export const TransportIntro4Illustration = () => (
+  <svg viewBox="0 0 800 400" className="w-full h-auto" role="img" aria-label="TCP vs UDP choice">
+    <GridDefs id="grid-ti4" />
+    <rect width="800" height="400" fill="url(#grid-ti4)" opacity="0.3" />
+ 
+    <text x="400" y="46" textAnchor="middle" fill="hsl(140 100% 75%)" fontSize="14"
+      fontFamily="monospace" letterSpacing="3">HOW WILL IT TRAVEL?</text>
+ 
+    {/* Fork from center */}
+    <circle cx="400" cy="180" r="36" fill="hsl(220 30% 8%)"
+      stroke="hsl(140 100% 55%)" strokeWidth="2.5">
+      <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <text x="400" y="184" textAnchor="middle" fill="hsl(140 100% 80%)" fontSize="12"
+      fontFamily="monospace" fontWeight="bold">DATA</text>
+ 
+    {/* TCP branch */}
+    <line x1="368" y1="160" x2="220" y2="110" stroke="hsl(200 100% 60%)" strokeWidth="2.5" />
+    <polygon points="224,104 204,110 218,126" fill="hsl(200 100% 60%)" />
+ 
+    <rect x="60" y="60" width="200" height="130" rx="12"
+      fill="hsl(200 100% 55% / 0.12)" stroke="hsl(200 100% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
+    </rect>
+    <text x="160" y="102" textAnchor="middle" fill="hsl(200 100% 85%)" fontSize="20"
+      fontFamily="monospace" fontWeight="bold">TCP</text>
+    <text x="160" y="126" textAnchor="middle" fill="hsl(200 100% 65%)" fontSize="11"
+      fontFamily="monospace">reliable</text>
+    <text x="160" y="146" textAnchor="middle" fill="hsl(200 100% 50%)" fontSize="10"
+      fontFamily="monospace">ordered · confirmed</text>
+    <text x="160" y="166" textAnchor="middle" fill="hsl(200 100% 40%)" fontSize="10"
+      fontFamily="monospace">slower · safe</text>
+ 
+    {/* UDP branch */}
+    <line x1="368" y1="200" x2="220" y2="250" stroke="hsl(30 100% 60%)" strokeWidth="2.5" />
+    <polygon points="224,244 204,250 218,266" fill="hsl(30 100% 60%)" />
+ 
+    <rect x="60" y="210" width="200" height="130" rx="12"
+      fill="hsl(30 100% 55% / 0.12)" stroke="hsl(30 100% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite" />
+    </rect>
+    <text x="160" y="252" textAnchor="middle" fill="hsl(30 100% 85%)" fontSize="20"
+      fontFamily="monospace" fontWeight="bold">UDP</text>
+    <text x="160" y="276" textAnchor="middle" fill="hsl(30 100% 65%)" fontSize="11"
+      fontFamily="monospace">fast</text>
+    <text x="160" y="296" textAnchor="middle" fill="hsl(30 100% 50%)" fontSize="10"
+      fontFamily="monospace">no confirmation</text>
+    <text x="160" y="316" textAnchor="middle" fill="hsl(30 100% 40%)" fontSize="10"
+      fontFamily="monospace">quicker · lossy ok</text>
+ 
+    {/* Use case examples */}
+    <rect x="540" y="60" width="200" height="60" rx="8"
+      fill="hsl(200 100% 55% / 0.08)" stroke="hsl(200 100% 50%)" strokeWidth="1.5" />
+    <text x="640" y="88" textAnchor="middle" fill="hsl(200 100% 65%)" fontSize="11" fontFamily="monospace">web · email · files</text>
+    <text x="640" y="106" textAnchor="middle" fill="hsl(200 100% 45%)" fontSize="10" fontFamily="monospace">→ TCP</text>
+ 
+    <rect x="540" y="280" width="200" height="60" rx="8"
+      fill="hsl(30 100% 55% / 0.08)" stroke="hsl(30 100% 50%)" strokeWidth="1.5" />
+    <text x="640" y="308" textAnchor="middle" fill="hsl(30 100% 65%)" fontSize="11" fontFamily="monospace">gaming · streaming</text>
+    <text x="640" y="326" textAnchor="middle" fill="hsl(30 100% 45%)" fontSize="10" fontFamily="monospace">→ UDP</text>
+ 
+    <line x1="436" y1="168" x2="536" y2="100" stroke="hsl(200 100% 40%)" strokeWidth="1" strokeDasharray="4 4" />
+    <line x1="436" y1="192" x2="536" y2="300" stroke="hsl(30 100% 40%)" strokeWidth="1" strokeDasharray="4 4" />
+  </svg>
+);
+
+export const TransportIntro5Illustration = () => (
+  <svg viewBox="0 0 800 400" className="w-full h-auto" role="img" aria-label="Ports as doors to services">
+    <GridDefs id="grid-ti5" />
+    <rect width="800" height="400" fill="url(#grid-ti5)" opacity="0.3" />
+ 
+    <text x="400" y="46" textAnchor="middle" fill="hsl(140 100% 75%)" fontSize="14"
+      fontFamily="monospace" letterSpacing="3">PORTS = DOORS</text>
+ 
+    {/* Building (server) */}
+    <rect x="460" y="60" width="280" height="300" rx="10"
+      fill="hsl(220 30% 8%)" stroke="hsl(140 100% 55%)" strokeWidth="2" />
+ 
+    {/* Door : 80 */}
+    <rect x="490" y="90" width="90" height="80" rx="6"
+      fill="hsl(200 100% 55% / 0.15)" stroke="hsl(200 100% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2s" begin="0s" repeatCount="indefinite" />
+    </rect>
+    <text x="535" y="128" textAnchor="middle" fill="hsl(200 100% 75%)" fontSize="11" fontFamily="monospace" fontWeight="bold">:80</text>
+    <text x="535" y="148" textAnchor="middle" fill="hsl(200 100% 55%)" fontSize="9" fontFamily="monospace">HTTP</text>
+ 
+    {/* Door : 443 */}
+    <rect x="620" y="90" width="90" height="80" rx="6"
+      fill="hsl(140 100% 50% / 0.15)" stroke="hsl(140 100% 55%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2s" begin="0.4s" repeatCount="indefinite" />
+    </rect>
+    <text x="665" y="128" textAnchor="middle" fill="hsl(140 100% 75%)" fontSize="11" fontFamily="monospace" fontWeight="bold">:443</text>
+    <text x="665" y="148" textAnchor="middle" fill="hsl(140 100% 55%)" fontSize="9" fontFamily="monospace">HTTPS</text>
+ 
+    {/* Door : 21 */}
+    <rect x="490" y="210" width="90" height="80" rx="6"
+      fill="hsl(30 100% 55% / 0.15)" stroke="hsl(30 100% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2s" begin="0.8s" repeatCount="indefinite" />
+    </rect>
+    <text x="535" y="248" textAnchor="middle" fill="hsl(30 100% 75%)" fontSize="11" fontFamily="monospace" fontWeight="bold">:21</text>
+    <text x="535" y="268" textAnchor="middle" fill="hsl(30 100% 55%)" fontSize="9" fontFamily="monospace">FTP</text>
+ 
+    {/* Door : 25 */}
+    <rect x="620" y="210" width="90" height="80" rx="6"
+      fill="hsl(0 70% 55% / 0.15)" stroke="hsl(0 70% 60%)" strokeWidth="2">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2s" begin="1.2s" repeatCount="indefinite" />
+    </rect>
+    <text x="665" y="248" textAnchor="middle" fill="hsl(0 70% 75%)" fontSize="11" fontFamily="monospace" fontWeight="bold">:25</text>
+    <text x="665" y="268" textAnchor="middle" fill="hsl(0 70% 55%)" fontSize="9" fontFamily="monospace">SMTP</text>
+ 
+    <text x="600" y="360" textAnchor="middle" fill="hsl(140 100% 55%)" fontSize="11" fontFamily="monospace">SERVER</text>
+ 
+    {/* Animated packet flying to port 80 */}
+    <rect width="70" height="30" rx="5" fill="hsl(200 100% 55%)" stroke="hsl(200 100% 88%)" strokeWidth="1.5">
+      <animate attributeName="x" from="60" to="450" dur="2.2s" repeatCount="indefinite" />
+      <animate attributeName="y" values="120;120" dur="2.2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.88;1" dur="2.2s" repeatCount="indefinite" />
+    </rect>
+    <text fontSize="10" fontFamily="monospace" fontWeight="bold" fill="hsl(220 30% 5%)" textAnchor="middle">
+      <animate attributeName="x" from="95" to="485" dur="2.2s" repeatCount="indefinite" />
+      <animate attributeName="y" values="140;140" dur="2.2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.88;1" dur="2.2s" repeatCount="indefinite" />
+      → :80
+    </text>
+ 
+    {/* Source label */}
+    <circle cx="100" cy="220" r="45" fill="hsl(220 30% 8%)" stroke="hsl(200 100% 55%)" strokeWidth="2" />
+    <text x="100" y="216" textAnchor="middle" fill="hsl(200 100% 75%)" fontSize="11" fontFamily="monospace" fontWeight="bold">YOUR</text>
+    <text x="100" y="232" textAnchor="middle" fill="hsl(200 100% 55%)" fontSize="11" fontFamily="monospace" fontWeight="bold">DATA</text>
+ 
+    <text x="260" y="370" textAnchor="middle" fill="hsl(140 100% 55%)" fontSize="11" fontFamily="monospace">
+      port = which door to knock on
+    </text>
+  </svg>
+);
+ 
+
+export const TransportIntro6Illustration = () => (
+  <svg viewBox="0 0 800 400" className="w-full h-auto" role="img" aria-label="Transport layer — ready to journey">
+    <GridDefs id="grid-ti6" />
+    <rect width="800" height="400" fill="url(#grid-ti6)" opacity="0.3" />
+ 
+    {/* Large central Transport badge pulsing with energy */}
+    {[200, 160, 120].map((r, i) => (
+      <ellipse key={i} cx="400" cy="185" rx={r} ry={r * 0.55}
+        fill="none" stroke="hsl(140 100% 50%)" strokeWidth="1.2" opacity={0.12 - i * 0.03}>
+        <animate attributeName="rx" values={`${r};${r+18};${r}`}
+          dur={`${2.2 + i * 0.5}s`} repeatCount="indefinite" />
+        <animate attributeName="opacity"
+          values={`${0.12 - i*0.03};0.04;${0.12 - i*0.03}`}
+          dur={`${2.2 + i * 0.5}s`} repeatCount="indefinite" />
+      </ellipse>
+    ))}
+ 
+    <rect x="170" y="130" width="460" height="110" rx="16"
+      fill="hsl(140 100% 50% / 0.14)" stroke="hsl(140 100% 60%)" strokeWidth="3">
+      <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="1.8s" repeatCount="indefinite" />
+    </rect>
+    <text x="400" y="190" textAnchor="middle" fill="hsl(140 100% 88%)" fontSize="26"
+      fontFamily="monospace" fontWeight="bold" letterSpacing="4">TRANSPORT</text>
+    <text x="400" y="220" textAnchor="middle" fill="hsl(140 100% 60%)" fontSize="13"
+      fontFamily="monospace" letterSpacing="2">LAYER</text>
+ 
+    {/* Three capabilities as small badges */}
+    {[
+      { label: "SEGMENTS",  color: "200 100% 60%", x: 90  },
+      { label: "TCP / UDP", color: "140 100% 55%", x: 320 },
+      { label: "PORTS",     color: "30  100% 60%", x: 550 },
+    ].map((b, i) => (
+      <g key={i}>
+        <rect x={b.x} y="278" width="160" height="46" rx="8"
+          fill={`hsl(${b.color} / 0.12)`} stroke={`hsl(${b.color})`} strokeWidth="1.8">
+          <animate attributeName="stroke-opacity" values="0.4;1;0.4"
+            dur="2s" begin={`${i * 0.4}s`} repeatCount="indefinite" />
+        </rect>
+        <text x={b.x + 80} y="307" textAnchor="middle" fill={`hsl(${b.color})`}
+          fontSize="13" fontFamily="monospace" fontWeight="bold">{b.label}</text>
+      </g>
+    ))}
+ 
+    {/* Connecting lines from badge to center */}
+    {[170, 400, 630].map((x, i) => (
+      <line key={i} x1={x} y1="278" x2={[340, 400, 470][i]} y2="240"
+        stroke="hsl(140 100% 40% / 0.35)" strokeWidth="1" strokeDasharray="4 4" />
+    ))}
+ 
+    <text x="400" y="370" textAnchor="middle" fill="hsl(140 100% 50%)" fontSize="11" fontFamily="monospace">
+      your real journey begins here
+    </text>
+  </svg>
+);
+ 

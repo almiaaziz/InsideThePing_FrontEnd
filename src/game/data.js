@@ -324,28 +324,28 @@ export const layers = [
       type: "scenes",
       scenes: [
         {
-          text: "You made it past the Application Layer. Your message is structured, but it cannot travel alone.",
-          visual: "/public/assets/videos/layers/TransportLayer.mp4",
+          text: "You made it past the Application Layer...",
+          visual: "packet_v1", 
         },
         {
-          text: "Welcome to the Transport Layer. Here, your data is broken into smaller pieces called segments.",
-          visual: "highlight-transport",
+          text: "Welcome to the Transport Layer...",
+          visual: "highlight-transport", 
         },
         {
-          text: "Each segment is tagged so the receiver can rebuild the original message in the correct order.",
-          visual: "/public/assets/videos/layers/TransportLayer.mp4",
+          text: "Each segment is tagged so the receiver can rebuild...",
+          visual: "transport-intro-3",
         },
         {
-          text: "This layer also chooses HOW your data will travel: reliably with TCP, or quickly with UDP.",
-          visual: "/public/assets/videos/layers/TransportLayer.mp4",
+          text: "This layer also chooses HOW your data will travel...",
+          visual: "transport-intro-4", 
         },
         {
-          text: "And it decides WHICH service on the destination should receive it, using ports as doors.",
-          visual: "/public/assets/videos/layers/TransportLayer.mp4",
+          text: "And it decides WHICH service on the destination...",
+          visual: "transport-intro-5", 
         },
         {
-          text: "Get ready. The Transport Layer is where your message starts its real journey across the network.",
-          visual: "/public/assets/videos/layers/TransportLayer.mp4",
+          text: "Get ready. The Transport Layer is where...",
+          visual: "transport-intro-6", 
         },
       ],
     },
@@ -815,6 +815,393 @@ export const layers = [
           successMessage: "Correct! Your packet has been routed successfully.",
           failMessage:
             "Incorrect order. Think about what your device checks first.",
+        },
+      },
+    ],
+  },
+
+  // Layer 4: Network Access Layer
+  {
+    id: "4",
+    name: "Network Access Layer",
+    background: "/public/assets/videos/layers/NetworkLayer_v1.mp4",
+ 
+    intro: {
+      type: "scenes",
+      scenes: [
+        {
+          text: "Your packet has an IP address. It knows where it's going. But there's one final challenge.",
+          visual: "packet-ready",
+        },
+        {
+          text: "Welcome to the Network Access Layer — the deepest layer of your journey.",
+          visual: "highlight-network-access",
+        },
+        {
+          text: "This is where your data finally touches the physical world: cables, wireless signals, and hardware.",
+          visual: "physical-world",
+        },
+        {
+          text: "At this layer, your packet is wrapped into a Frame — the unit of data that travels between devices on the same local network.",
+          visual: "packet-to-frame",
+        },
+        {
+          text: "But the Internet Layer works with IP addresses. The Network Access Layer works with something different: MAC addresses.",
+          visual: "ip-vs-mac",
+        },
+        {
+          text: "A MAC address is the unique physical identity of every network card — burned into the hardware at the factory.",
+          visual: "mac-identity",
+        },
+        {
+          text: "Think of it this way: the IP address is like a postal address. The MAC address is like the name on the door.",
+          visual: "ip-mac-analogy",
+        },
+        {
+          text: "To deliver your frame to the right device, the network needs to know the MAC address of the next stop.",
+          visual: "next-hop-mac",
+        },
+        {
+          text: "That is the job of ARP — it translates IP addresses into MAC addresses so frames can be delivered.",
+          visual: "arp-bridge",
+        },
+        {
+          text: "And once the frame is on the wire, a device called a switch decides which port to send it to — using MAC addresses, not IP.",
+          visual: "switch-decision",
+        },
+        {
+          text: "This is the final frontier before your data becomes electrical signals or radio waves.",
+          visual: "final-frontier",
+        },
+        {
+          text: "Let's go deeper. Your frame is almost ready to travel.",
+          visual: "packet_v2",
+        },
+      ],
+    },
+ 
+    topics: [
+      // Topic 1: MAC Addresses
+      {
+        id: "1",
+        title: "MAC Addresses",
+ 
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Every device that connects to a network has a network card — also called a NIC (Network Interface Card).",
+              visual: "nic-intro",
+            },
+            {
+              text: "Each NIC has a unique identifier permanently assigned at the factory: the MAC address.",
+              visual: "mac-factory",
+            },
+            {
+              text: "MAC stands for Media Access Control. It is the physical address of your hardware.",
+              visual: "mac-meaning",
+            },
+            {
+              text: "A MAC address looks like this: 00:1A:2B:3C:4D:5E",
+              visual: "mac-format",
+            },
+            {
+              text: "It is made of 6 groups of 2 hexadecimal digits, separated by colons.",
+              visual: "mac-structure",
+            },
+            {
+              text: "The first 3 groups identify the manufacturer. The last 3 groups identify the specific device.",
+              visual: "mac-oui-device",
+            },
+            {
+              text: "Unlike IP addresses, MAC addresses do not change. They are fixed to the hardware.",
+              visual: "mac-fixed",
+            },
+            {
+              text: "MAC addresses only work within a local network. They are not used to route data across the internet.",
+              visual: "mac-local-scope",
+            },
+            {
+              text: "That is why both IP and MAC addresses are needed: IP for global routing, MAC for local delivery.",
+              visual: "mac-ip-together",
+            },
+            {
+              text: "Now you know the physical identity of every device. But how does the network find the right MAC address?",
+              visual: "packet_v1",
+            },
+          ],
+        },
+ 
+        mission: {
+          type: "quiz",
+          title: "Identify the MAC address",
+          question: "Which of the following is a valid MAC address?",
+          options: [
+            {
+              id: "correct",
+              label: "00:1A:2B:3C:4D:5E",
+              description:
+                "Correct! A MAC address is 6 groups of 2 hexadecimal digits separated by colons.",
+            },
+            {
+              id: "wrong1",
+              label: "192.168.1.10",
+              description:
+                "Incorrect. That is an IPv4 address, not a MAC address.",
+            },
+            {
+              id: "wrong2",
+              label: "255.255.255.0",
+              description:
+                "Incorrect. That is a subnet mask, not a MAC address.",
+            },
+            {
+              id: "wrong3",
+              label: "00:1A:2B:3C",
+              description:
+                "Incorrect. A MAC address must have 6 groups, not 4.",
+            },
+          ],
+          answer: "correct",
+        },
+      },
+ 
+      // Topic 2: ARP (Address Resolution Protocol)
+      {
+        id: "2",
+        title: "ARP — Address Resolution Protocol",
+ 
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Your device knows the destination IP address. But to send a frame, it needs the destination MAC address.",
+              visual: "ip-to-mac-problem",
+            },
+            {
+              text: "This is where ARP comes in — the Address Resolution Protocol.",
+              visual: "arp-intro",
+            },
+            {
+              text: "ARP asks the local network a simple question: 'Who has this IP address? Tell me your MAC address.'",
+              visual: "arp-broadcast",
+            },
+            {
+              text: "This question is sent as a broadcast — meaning it is sent to every device on the local network.",
+              visual: "arp-broadcast-wave",
+            },
+            {
+              text: "Every device receives it. But only the one that owns that IP address replies.",
+              visual: "arp-reply",
+            },
+            {
+              text: "The reply says: 'That IP is mine. Here is my MAC address: 00:1A:2B:3C:4D:5E'",
+              visual: "arp-response",
+            },
+            {
+              text: "Your device saves this answer in a local table called the ARP cache, to avoid asking again.",
+              visual: "arp-cache",
+            },
+            {
+              text: "Now your device has both the IP and the MAC address. The frame can be built and sent.",
+              visual: "frame-ready",
+            },
+          ],
+        },
+ 
+        mission: {
+          type: "order",
+          title: "Trace the ARP process",
+          question: "Put the ARP resolution steps in the correct order:",
+          items: [
+            {
+              id: "step4",
+              label: "Device saves the MAC in its ARP cache",
+            },
+            {
+              id: "step1",
+              label: "Device knows the destination IP but not the MAC",
+            },
+            {
+              id: "step3",
+              label: "Target device replies with its MAC address",
+            },
+            {
+              id: "step2",
+              label: "Device sends an ARP broadcast to the local network",
+            },
+          ],
+          answer: ["step1", "step2", "step3", "step4"],
+          successMessage: "Correct! ARP has resolved the MAC address successfully.",
+          failMessage: "Incorrect. Think about what happens before a device can reply.",
+        },
+      },
+ 
+      // Topic 3: Switching
+      {
+        id: "3",
+        title: "Switching",
+ 
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "Inside your local network, there is a device responsible for delivering frames to the right machine: the switch.",
+              visual: "switch-intro",
+            },
+            {
+              text: "A switch is a hardware device that connects multiple devices in the same network.",
+              visual: "switch-devices",
+            },
+            {
+              text: "Unlike a hub — which sends data to everyone — a switch is smart. It knows exactly where to send each frame.",
+              visual: "switch-vs-hub",
+            },
+            {
+              text: "When a frame arrives, the switch reads the destination MAC address in the frame header.",
+              visual: "switch-reads-mac",
+            },
+            {
+              text: "The switch maintains a MAC address table — also called a CAM table — that maps each MAC address to a port.",
+              visual: "cam-table",
+            },
+            {
+              text: "It looks up the destination MAC in the table and forwards the frame only to the correct port.",
+              visual: "switch-forward",
+            },
+            {
+              text: "If the MAC address is not yet in the table, the switch floods the frame to all ports except the one it came from.",
+              visual: "switch-flood",
+            },
+            {
+              text: "Over time, the switch learns which device is on which port by recording the source MAC of every incoming frame.",
+              visual: "switch-learns",
+            },
+            {
+              text: "This makes switching fast, efficient, and private — only the intended device receives the frame.",
+              visual: "switch-efficient",
+            },
+          ],
+        },
+ 
+        mission: {
+          type: "quiz",
+          title: "How does a switch decide?",
+          question:
+            "A frame arrives at a switch with destination MAC 00:1A:2B:3C:4D:5E. The MAC is not in the CAM table. What does the switch do?",
+          options: [
+            {
+              id: "correct",
+              label: "Flood the frame to all ports except the source port",
+              description:
+                "Correct! When a MAC is unknown, the switch floods so the destination can reveal itself.",
+            },
+            {
+              id: "wrong1",
+              label: "Drop the frame immediately",
+              description:
+                "Incorrect. Switches do not drop unknown frames — they flood them.",
+            },
+            {
+              id: "wrong2",
+              label: "Send it only to the router",
+              description:
+                "Incorrect. Switches operate at the local level using MAC addresses, not the router.",
+            },
+            {
+              id: "wrong3",
+              label: "Ask the server for the correct port",
+              description:
+                "Incorrect. Switches learn from traffic autonomously — they do not query a server.",
+            },
+          ],
+          answer: "correct",
+        },
+      },
+ 
+      // Topic 4: Frames
+      {
+        id: "4",
+        title: "Frames",
+ 
+        explanation: {
+          type: "scenes",
+          scenes: [
+            {
+              text: "You now know about MAC addresses, ARP, and switching. It is time to look at the frame itself.",
+              visual: "frame-intro",
+            },
+            {
+              text: "A frame is the unit of data that travels between devices at the Network Access Layer.",
+              visual: "frame-unit",
+            },
+            {
+              text: "Think of it as an envelope: it wraps your packet and adds the information needed for local delivery.",
+              visual: "frame-envelope",
+            },
+            {
+              text: "A frame has three main parts: the header, the payload, and the trailer.",
+              visual: "frame-structure",
+            },
+            {
+              text: "The header contains the destination MAC address, the source MAC address, and the frame type.",
+              visual: "frame-header",
+            },
+            {
+              text: "The payload is the packet from the Internet Layer — your actual data.",
+              visual: "frame-payload",
+            },
+            {
+              text: "The trailer contains an FCS — Frame Check Sequence — a value used to detect errors during transmission.",
+              visual: "frame-trailer",
+            },
+            {
+              text: "When the frame arrives, the receiver checks the FCS. If the data was corrupted, the frame is discarded.",
+              visual: "frame-check",
+            },
+            {
+              text: "Your data is now a frame. It has a source, a destination, a payload, and error detection.",
+              visual: "frame-complete",
+            },
+            {
+              text: "This frame will be converted into electrical signals or radio waves and sent across the physical medium.",
+              visual: "frame-to-signal",
+            },
+            {
+              text: "Congratulations. Your message has traveled through all four layers and is ready to reach the server.",
+              visual: "journey-complete",
+            },
+          ],
+        },
+ 
+        mission: {
+          type: "match",
+          title: "Match the frame parts",
+          question: "Connect each part of a frame to its correct description.",
+          left: [
+            { id: "header", label: "Header" },
+            { id: "payload", label: "Payload" },
+            { id: "trailer", label: "Trailer" },
+          ],
+          right: [
+            {
+              id: "mac-addresses",
+              label: "Contains source and destination MAC addresses",
+            },
+            {
+              id: "packet-data",
+              label: "Carries the actual packet from the Internet Layer",
+            },
+            {
+              id: "fcs-check",
+              label: "Holds the FCS for error detection",
+            },
+          ],
+          answer: {
+            header: "mac-addresses",
+            payload: "packet-data",
+            trailer: "fcs-check",
+          },
         },
       },
     ],
