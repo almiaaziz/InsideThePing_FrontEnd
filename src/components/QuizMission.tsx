@@ -6,77 +6,63 @@ import { MissionResult } from "./MissionResult";
 
 const QuizMission = ({ mission }) => {
   const nextStep = useGameStore((state) => state.nextStep);
-
   const updateStats = useGameStore((s) => s.updateStats);
   const [tries, setTries] = useState(0);
   const [showResult, setShowResult] = useState(false);
-
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [options] = useState(() => shuffle([...mission.options]));
 
-const handleSelect = (option) => {
-  if (feedback === "success") return;
+  const handleSelect = (option) => {
+    if (feedback === "success") return;
+    const nextTries = tries + 1;
+    setTries(nextTries);
+    setSelected(option.id);
 
-  const nextTries = tries + 1;
-  setTries(nextTries);
-
-  setSelected(option.id);
-
-  if (option.id === mission.answer) {
-    updateStats(nextTries);
-    setFeedback("success");
-  } else {
-    setFeedback("error");
-
-    setTimeout(() => {
-      setSelected(null);
-      setFeedback(null);
-    }, 1200);
-  }
-};
+    if (option.id === mission.answer) {
+      updateStats(nextTries);
+      setFeedback("success");
+    } else {
+      setFeedback("error");
+      setTimeout(() => {
+        setSelected(null);
+        setFeedback(null);
+      }, 1200);
+    }
+  };
 
   return (
     <>
       {!showResult ? (
         <>
-          {/* OPTIONS */}
-          <div className="grid grid-cols-2 gap-3 flex-1">
+          {/* OPTIONS — 1 col on mobile, 2 col on sm+ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 flex-1">
             {options.map((opt) => (
               <button
                 key={opt.id}
                 onClick={() => handleSelect(opt)}
-                className={`glass-panel rounded-lg p-4 text-left transition-all duration-300 hover:scale-[1.02]
-              ${
-                selected === opt.id
-                  ? feedback === "success"
-                    ? "neon-border-green"
-                    : "neon-border-red"
-                  : "hover:neon-border-cyan"
-              }
-              ${
-                feedback === "error" && selected === opt.id
-                  ? "animate-[glitch_1s_ease-in-out]"
-                  : ""
-              }
-            `}
+                className={`glass-panel rounded-lg p-3 sm:p-4 text-left transition-all duration-300 hover:scale-[1.02]
+                  ${selected === opt.id
+                    ? feedback === "success" ? "neon-border-green" : "neon-border-red"
+                    : "hover:neon-border-cyan"
+                  }
+                  ${feedback === "error" && selected === opt.id ? "animate-[glitch_1s_ease-in-out]" : ""}
+                `}
                 disabled={feedback === "success"}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-display text-sm tracking-wider">
+                <div className="flex items-center justify-between mb-1 sm:mb-2">
+                  <span className="text-display text-xs sm:text-sm tracking-wider">
                     {opt.label}
                   </span>
-
                   {selected === opt.id && feedback === "success" && (
-                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
                   )}
-
                   {selected === opt.id && feedback === "error" && (
-                    <XCircle className="w-4 h-4 text-red-400" />
+                    <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
                   )}
                 </div>
                 {selected === opt.id && (
-                  <p className="text-lg text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
                     {opt.description}
                   </p>
                 )}
@@ -84,11 +70,10 @@ const handleSelect = (option) => {
             ))}
           </div>
 
-          {/* CONTINUE */}
           {feedback === "success" && (
             <button
               onClick={() => setShowResult(true)}
-              className="glass-panel neon-border-green rounded-lg px-4 py-3 text-display text-sm tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform animate-fade-in"
+              className="glass-panel neon-border-green rounded-lg px-4 py-2 sm:py-3 text-display text-xs sm:text-sm tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform animate-fade-in"
             >
               CONTINUE <ArrowRight className="w-4 h-4" />
             </button>

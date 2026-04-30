@@ -33,7 +33,7 @@ const StoryIntro = () => {
           <div className="w-full max-w-3xl px-4 py-20">
             {/* Long Image */}
             <img
-              src="/public/assets/images/fullStory.png" // your long PNG
+              src="/public/assets/images/story.png" 
               alt="Story panels"
               className="w-full h-auto object-contain select-none pointer-events-none "
               draggable={false}

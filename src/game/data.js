@@ -9,7 +9,7 @@ export const layers = [
       type: "scenes",
       scenes: [
         {
-          text: "Welcome, I'm PACKET, your guide through the network.",
+          text: "Welcome back, I'm PACKET, your guide through the network.",
           visual: "packet_v2",
         },
         {
