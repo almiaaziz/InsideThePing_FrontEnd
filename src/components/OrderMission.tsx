@@ -16,7 +16,8 @@ const OrderMission = ({ mission }) => {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState(false);
   const status = validated ? "success" : error ? "error" : "idle";
-  const handleDragStart = (e, index) => {
+
+  /*const handleDragStart = (e, index) => {
     e.dataTransfer.setData("index", index);
   };
 
@@ -34,12 +35,34 @@ const OrderMission = ({ mission }) => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
+  };*/
+
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const handleSelect = (index) => {
+    if (selectedIndex === null) {
+      setSelectedIndex(index);
+      return;
+    }
+
+    if (selectedIndex === index) {
+      setSelectedIndex(null);
+      return;
+    }
+
+    const newItems = [...items];
+    const temp = newItems[selectedIndex];
+
+    newItems[selectedIndex] = newItems[index];
+    newItems[index] = temp;
+
+    setItems(newItems);
+    setSelectedIndex(null);
   };
 
   const checkOrder = () => {
-
-  const nextTries = tries + 1;
-  setTries(nextTries);
+    const nextTries = tries + 1;
+    setTries(nextTries);
 
     const currentOrder = items.map((i) => i.id);
     const isCorrect =
@@ -64,7 +87,8 @@ const OrderMission = ({ mission }) => {
       {!showResult ? (
         <div className="flex flex-col flex-1 gap-4">
           {/* DRAG LIST */}
-          <div className="flex flex-col flex-1 gap-5">
+          {/*
+        <div className="flex flex-col flex-1 gap-5">
             {items.map((item, index) => (
               <div
                 key={item.id}
@@ -88,7 +112,32 @@ const OrderMission = ({ mission }) => {
               </div>
             ))}
           </div>
-
+         */}
+          <div className="flex flex-col flex-1 gap-5">
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                onClick={() => handleSelect(index)}
+                className={`glass-panel rounded-lg p-4 cursor-pointer flex-1 flex items-center justify-center transition-all
+      ${selectedIndex === index ? "neon-border-cyan scale-105" : ""}
+      ${
+        status === "success"
+          ? "neon-border-green"
+          : status === "error"
+            ? "neon-border-red animate-[glitch_0.4s_ease-in-out]"
+            : "hover:neon-border-cyan"
+      }
+    `}
+              >
+                {selectedIndex === index && (
+  <span className="absolute text-[10px] -top-2 text-cyan-400">
+    SELECTED
+  </span>
+)}
+                {item.label}
+              </div>
+            ))}
+          </div>
           {/* VALIDATE */}
           {!validated && (
             <button
