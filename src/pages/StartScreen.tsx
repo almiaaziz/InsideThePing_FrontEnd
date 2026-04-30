@@ -11,7 +11,9 @@ const StartScreen = () => {
   const navigate = useNavigate();
   const [isExiting, setIsExiting] = useState(false);
 
-  const { currentLayer, currentTopic } = useGameStore((state) => state.progress);
+  const { currentLayer, currentTopic } = useGameStore(
+    (state) => state.progress,
+  );
   const resetProgress = useGameStore((state) => state.resetProgress);
 
   const hasProgress = currentLayer > 1 || currentTopic > 0;
@@ -23,14 +25,20 @@ const StartScreen = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm("Reset all your progress and stats? This cannot be undone.")) {
+    if (
+      window.confirm(
+        "Reset all your progress and stats? This cannot be undone.",
+      )
+    ) {
       resetProgress();
     }
   };
 
   return (
-    <div className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ${isExiting ? "opacity-0 scale-110" : "opacity-100"}`}>
-      <BackgroundVideo src="/public/assets/videos/HomePageVideo.mp4" />
+    <div
+      className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ${isExiting ? "opacity-0 scale-110" : "opacity-100"}`}
+    >
+      <BackgroundVideo src="/assets/videos/HomePageVideo.mp4" />
       <ParticleField />
 
       <div className="relative z-10 flex flex-col items-center gap-8 sm:gap-12 px-4 text-center">
@@ -41,7 +49,10 @@ const StartScreen = () => {
           </div>
           <h1
             className="text-4xl sm:text-5xl md:text-7xl font-display font-black tracking-wider glow-text-cyan"
-            style={{ textShadow: "0 0 40px hsl(200 100% 50% / 0.4), 0 0 80px hsl(200 100% 50% / 0.2)" }}
+            style={{
+              textShadow:
+                "0 0 40px hsl(200 100% 50% / 0.4), 0 0 80px hsl(200 100% 50% / 0.2)",
+            }}
           >
             INSIDE THE PING
           </h1>
@@ -59,7 +70,8 @@ const StartScreen = () => {
           <div
             className="absolute inset-0 rounded-2xl animate-pulse-glow"
             style={{
-              background: "linear-gradient(135deg, hsl(200 100% 50% / 0.2), hsl(280 80% 60% / 0.2))",
+              background:
+                "linear-gradient(135deg, hsl(200 100% 50% / 0.2), hsl(280 80% 60% / 0.2))",
               filter: "blur(20px)",
             }}
           />
@@ -69,22 +81,40 @@ const StartScreen = () => {
         </button>
 
         {hasProgress && (
-          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono tracking-widest -mt-4 sm:-mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+          <div
+            className="text-[9px] sm:text-[10px] text-muted-foreground font-mono tracking-widest -mt-4 sm:-mt-6 animate-fade-in"
+            style={{ animationDelay: "0.4s" }}
+          >
             RESUMING AT — {currentLayerName.toUpperCase()} LAYER
           </div>
         )}
 
         {/* Layer indicators */}
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+        <div
+          className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 animate-fade-in"
+          style={{ animationDelay: "0.6s" }}
+        >
           {[
             { label: "APP", cls: "glow-text-cyan", dot: "bg-primary" },
-            { label: "TRANSPORT", cls: "glow-text-green", dot: "bg-layer-transport" },
-            { label: "INTERNET", cls: "glow-text-orange", dot: "bg-layer-internet" },
+            {
+              label: "TRANSPORT",
+              cls: "glow-text-green",
+              dot: "bg-layer-transport",
+            },
+            {
+              label: "INTERNET",
+              cls: "glow-text-orange",
+              dot: "bg-layer-internet",
+            },
             { label: "NETWORK", cls: "glow-text-red", dot: "bg-destructive" },
           ].map((l) => (
             <div key={l.label} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full ${l.dot}`} />
-              <span className={`text-[10px] font-display tracking-widest ${l.cls}`}>{l.label}</span>
+              <span
+                className={`text-[10px] font-display tracking-widest ${l.cls}`}
+              >
+                {l.label}
+              </span>
             </div>
           ))}
         </div>

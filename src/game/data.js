@@ -3,7 +3,7 @@ export const layers = [
   {
     id: "1",
     name: "Application Layer",
-    background: "/public/assets/videos/layers/ApplicationLayer.mp4",
+    background: "/assets/videos/layers/ApplicationLayer.mp4",
 
     intro: {
       type: "scenes",
@@ -318,18 +318,18 @@ export const layers = [
   {
     id: "2",
     name: "Transport Layer",
-    background: "/public/assets/videos/layers/TransportLayer.mp4",
+    background: "/assets/videos/layers/TransportLayer.mp4",
 
     intro: {
       type: "scenes",
       scenes: [
         {
           text: "You made it past the Application Layer...",
-          visual: "packet_v1", 
+          visual: "packet_v1",
         },
         {
           text: "Welcome to the Transport Layer...",
-          visual: "highlight-transport", 
+          visual: "highlight-transport",
         },
         {
           text: "Each segment is tagged so the receiver can rebuild...",
@@ -337,15 +337,15 @@ export const layers = [
         },
         {
           text: "This layer also chooses HOW your data will travel...",
-          visual: "transport-intro-4", 
+          visual: "transport-intro-4",
         },
         {
           text: "And it decides WHICH service on the destination...",
-          visual: "transport-intro-5", 
+          visual: "transport-intro-5",
         },
         {
           text: "Get ready. The Transport Layer is where...",
-          visual: "transport-intro-6", 
+          visual: "transport-intro-6",
         },
       ],
     },
@@ -596,7 +596,7 @@ export const layers = [
   {
     id: "3",
     name: "Internet Layer",
-    background: "/public/assets/videos/layers/IPLayer_v2.mp4",
+    background: "/assets/videos/layers/IPLayer_v2.mp4",
 
     intro: {
       type: "scenes",
@@ -824,8 +824,8 @@ export const layers = [
   {
     id: "4",
     name: "Network Access Layer",
-    background: "/public/assets/videos/layers/NetworkLayer_v1.mp4",
- 
+    background: "/assets/videos/layers/NetworkLayer_v1.mp4",
+
     intro: {
       type: "scenes",
       scenes: [
@@ -879,13 +879,13 @@ export const layers = [
         },
       ],
     },
- 
+
     topics: [
       // Topic 1: MAC Addresses
       {
         id: "1",
         title: "MAC Addresses",
- 
+
         explanation: {
           type: "scenes",
           scenes: [
@@ -931,7 +931,7 @@ export const layers = [
             },
           ],
         },
- 
+
         mission: {
           type: "quiz",
           title: "Identify the MAC address",
@@ -965,12 +965,12 @@ export const layers = [
           answer: "correct",
         },
       },
- 
+
       // Topic 2: ARP (Address Resolution Protocol)
       {
         id: "2",
         title: "ARP — Address Resolution Protocol",
- 
+
         explanation: {
           type: "scenes",
           scenes: [
@@ -1008,7 +1008,7 @@ export const layers = [
             },
           ],
         },
- 
+
         mission: {
           type: "order",
           title: "Trace the ARP process",
@@ -1032,16 +1032,18 @@ export const layers = [
             },
           ],
           answer: ["step1", "step2", "step3", "step4"],
-          successMessage: "Correct! ARP has resolved the MAC address successfully.",
-          failMessage: "Incorrect. Think about what happens before a device can reply.",
+          successMessage:
+            "Correct! ARP has resolved the MAC address successfully.",
+          failMessage:
+            "Incorrect. Think about what happens before a device can reply.",
         },
       },
- 
+
       // Topic 3: Switching
       {
         id: "3",
         title: "Switching",
- 
+
         explanation: {
           type: "scenes",
           scenes: [
@@ -1083,7 +1085,7 @@ export const layers = [
             },
           ],
         },
- 
+
         mission: {
           type: "quiz",
           title: "How does a switch decide?",
@@ -1118,12 +1120,12 @@ export const layers = [
           answer: "correct",
         },
       },
- 
+
       // Topic 4: Frames
       {
         id: "4",
         title: "Frames",
- 
+
         explanation: {
           type: "scenes",
           scenes: [
@@ -1173,7 +1175,7 @@ export const layers = [
             },
           ],
         },
- 
+
         mission: {
           type: "match",
           title: "Match the frame parts",
